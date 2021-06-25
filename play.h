@@ -376,6 +376,8 @@ void play(){
 					if(d.key.keysym.scancode==SDL_SCANCODE_P){
 						pause_level=level;
 						pause_coin=total_coin;
+						Mix_PlayMusic( gMusic3, -1 );
+
 						goto Main_Menu;
 					} 
 
@@ -1023,6 +1025,7 @@ int points=0;
 					if(d.key.keysym.scancode==SDL_SCANCODE_P){
 						pause_level=level;
 						pause_coin=total_coin;
+						Mix_PlayMusic( gMusic3, -1 );
 						goto Main_Menu;
 					} 
 					player.handleEvent( d );	//Handle input for the dot
@@ -1683,6 +1686,7 @@ int points=0;
 					if(d.key.keysym.scancode==SDL_SCANCODE_P){
 						pause_level=level;
 						pause_coin=total_coin;
+						Mix_PlayMusic( gMusic3, -1 );
 						goto Main_Menu;
 					}
 
@@ -2381,6 +2385,7 @@ int points=0;
 					if(d.key.keysym.scancode==SDL_SCANCODE_P){
 						pause_level=level;
 						pause_coin=total_coin;
+						Mix_PlayMusic( gMusic3, -1 );
 						goto Main_Menu;
 					}
 
@@ -3137,6 +3142,7 @@ int points=0;
 					if(d.key.keysym.scancode==SDL_SCANCODE_P){
 						pause_level=level;
 						pause_coin=total_coin;
+						Mix_PlayMusic( gMusic3, -1 );
 						goto Main_Menu;
 					}
 
