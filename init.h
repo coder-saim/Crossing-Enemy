@@ -115,7 +115,7 @@ bool init(){
 	death = Mix_LoadWAV( "death.wav" );
 	coin = Mix_LoadWAV( "coin.mp3" );
 	victory = Mix_LoadWAV( "Victory.mp3" );
-	levelup = Mix_LoadWAV( "levelup.mp3" );
+	levelup = Mix_LoadWAV( "Victory.mp3" );
 
 
 

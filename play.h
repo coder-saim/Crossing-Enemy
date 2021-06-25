@@ -7,19 +7,26 @@
 #include <algorithm>
 #include"score.h"
 
-
+int pause_coin=10;
+int pause_level=2;
+int level=1;
 
 void play(){
 
     Main_Menu :
-	int points=0;
-    int menu_button = main_menu();
+	int total_coin=0;
+	int menu_button = main_menu();
 
-    if(menu_button==1){
+
+    if(menu_button==1 || menu_button==11){
 		Mix_HaltMusic();
 		InputTaken();
 
-		int level =1;
+		if(menu_button==11){
+			total_coin=pause_coin;
+			level= pause_level;
+		} 
+		else level=9;
 
 	//////////////////////**************LEVEL11111111111****************////////////////
 	//////////////////////**************LEVEL11111111111****************////////////////
@@ -27,7 +34,7 @@ void play(){
 
 		LEVEL :
 		
-		
+		//level= pause_level;
 		
 		if(level==1){
 		
@@ -74,32 +81,32 @@ void play(){
 		SDL_Rect ccoin1_position;
 		ccoin1_position.x = 950;
 		ccoin1_position.y = 888;
-		ccoin1_position.w = 30;
-		ccoin1_position.h = 30;
+		ccoin1_position.w = 20;
+		ccoin1_position.h = 20;
 
 		SDL_Rect ccoin2_position;
 		ccoin2_position.x = 30;
 		ccoin2_position.y = 250;
-		ccoin2_position.w = 30;
-		ccoin2_position.h = 30;
+		ccoin2_position.w = 20;
+		ccoin2_position.h = 20;
 
 		SDL_Rect ccoin3_position;
 		ccoin3_position.x = 0;
 		ccoin3_position.y = 900;
-		ccoin3_position.w = 30;
-		ccoin3_position.h = 30;
+		ccoin3_position.w = 20;
+		ccoin3_position.h = 20;
 
 		SDL_Rect ccoin4_position;
 		ccoin4_position.x = 1250;
 		ccoin4_position.y = 10;
-		ccoin4_position.w = 30;
-		ccoin4_position.h = 30;
+		ccoin4_position.w = 20;
+		ccoin4_position.h = 20;
 
 		SDL_Rect ccoin5_position;
 		ccoin5_position.x = 580;
 		ccoin5_position.y = 210;
-		ccoin5_position.w = 30;
-		ccoin5_position.h = 30;
+		ccoin5_position.w = 20;
+		ccoin5_position.h = 20;
 
 
 		enemy =IMG_Load("enemy.png");
@@ -358,13 +365,20 @@ void play(){
 			wall_30.w = 0;
 			wall_30.h = 0;
 
-
+		int points=0; 
 
 		while(!quit){
 			while( SDL_PollEvent( &d ) != 0 ){
 					if( d.type == SDL_QUIT ){
 						quit = true;
 					}
+
+					if(d.key.keysym.scancode==SDL_SCANCODE_P){
+						pause_level=level;
+						pause_coin=total_coin;
+						goto Main_Menu;
+					} 
+
 					player.handleEvent( d );	//Handle input for the dot
 					
 					
@@ -384,53 +398,58 @@ void play(){
 				
 				//collission with enemy
 				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 				if(  mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
 				&& mPosX >=(enemy2_position.x - enemy2_position.w) && mPosX <=(enemy2_position.x + enemy2_position.w)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 
 				if(  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
 				&& mPosY>=(enemy3_position.y - enemy3_position.h) && mPosY<=(enemy3_position.y + enemy3_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 
 				if(  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
 				&& mPosY>=(enemy4_position.y - enemy4_position.h) && mPosY<=(enemy4_position.y + enemy4_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 				if(  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
 				&& mPosY>=(enemy5_position.y - enemy5_position.h) && mPosY<=(enemy5_position.y + enemy5_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
@@ -466,106 +485,106 @@ void play(){
 
 				if((  mPosX >= (door_position.x-door_position.w) && mPosX <= (door_position.x+door_position.w) 
 				&& mPosY>=(door_position.y - door_position.h) && mPosY<=(door_position.y + door_position.h)) && points == 5){
-						Mix_PlayChannel( -1, levelup, 0 );puts("Level 1 Upgraded");++level; goto LEVEL;
+						Mix_PlayChannel( -1, levelup, 0 );puts("Level 1 Upgraded");++level;total_coin+=points; goto LEVEL;
 				} 
 
 				 
 
 
 				//Clear screen
-				SDL_SetRenderDrawColor( renderer, 47, 79, 79, 79 );
+				SDL_SetRenderDrawColor( renderer, 0, 0, 0, 0 );
 				SDL_RenderClear( renderer );
 
 
 				//Render wall
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
 				SDL_RenderFillRect( renderer, &wall_1 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
 				SDL_RenderFillRect( renderer, &wall_2 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_3 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_4 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_5 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_6 );
 				
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_7 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_8 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_9 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_10 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
 				SDL_RenderFillRect( renderer, &wall_11 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
 				SDL_RenderFillRect( renderer, &wall_12 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_13 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_14 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_15 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_16 );
 				
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_17 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_18 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_19 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_20 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
 				SDL_RenderFillRect( renderer, &wall_21 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
 				SDL_RenderFillRect( renderer, &wall_22 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_23 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_24 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_25 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_26 );
 				
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_27 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_28 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_29 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_30 );
 
 
@@ -658,7 +677,7 @@ void play(){
 				}
 		//Move the dot and check collision
 		player.move();
-		if(points>=1){
+		if(total_coin>=1){
 				++level; goto LEVEL;
 			} 
 
@@ -709,44 +728,44 @@ void play(){
 		SDL_Rect ccoin1_position;
 		ccoin1_position.x = 10;
 		ccoin1_position.y = 440;
-		ccoin1_position.w = 30;
-		ccoin1_position.h = 30;
+		ccoin1_position.w = 20;
+		ccoin1_position.h = 20;
 
 		SDL_Rect ccoin2_position;
 		ccoin2_position.x = 500;
 		ccoin2_position.y = 400;
-		ccoin2_position.w = 30;
-		ccoin2_position.h = 30;
+		ccoin2_position.w = 20;
+		ccoin2_position.h = 20;
 
 		SDL_Rect ccoin3_position;
 		ccoin3_position.x = 570;
 		ccoin3_position.y = 85;
-		ccoin3_position.w = 30;
-		ccoin3_position.h = 30;
+		ccoin3_position.w = 20;
+		ccoin3_position.h = 20;
 
 		SDL_Rect ccoin4_position;
 		ccoin4_position.x = 1050;
 		ccoin4_position.y = 30;
-		ccoin4_position.w = 30;
-		ccoin4_position.h = 30;
+		ccoin4_position.w = 20;
+		ccoin4_position.h = 20;
 
 		SDL_Rect ccoin5_position;
 		ccoin5_position.x = 650;
 		ccoin5_position.y = 730;
-		ccoin5_position.w = 30;
-		ccoin5_position.h = 30;
+		ccoin5_position.w = 20;
+		ccoin5_position.h = 20;
 
 		SDL_Rect ccoin6_position;
 		ccoin6_position.x = 900;
 		ccoin6_position.y = 650;
-		ccoin6_position.w = 30;
-		ccoin6_position.h = 30;
+		ccoin6_position.w = 20;
+		ccoin6_position.h = 20;
 
 		SDL_Rect ccoin7_position;
 		ccoin7_position.x = 1050;
 		ccoin7_position.y = 920;
-		ccoin7_position.w = 30;
-		ccoin7_position.h = 30;
+		ccoin7_position.w = 20;
+		ccoin7_position.h = 20;
 
 
 		enemy =IMG_Load("enemy.png");
@@ -993,13 +1012,19 @@ void play(){
          	wall_30.w = 80*1;
          	wall_30.h = 80*1;
 
-
+int points=0; 
 
 		while(!quit){
 			while( SDL_PollEvent( &d ) != 0 ){
 					if( d.type == SDL_QUIT ){
 						quit = true;
 					}
+
+					if(d.key.keysym.scancode==SDL_SCANCODE_P){
+						pause_level=level;
+						pause_coin=total_coin;
+						goto Main_Menu;
+					} 
 					player.handleEvent( d );	//Handle input for the dot
 					
 					
@@ -1019,53 +1044,58 @@ void play(){
 				
 				//collission with enemy
 				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 				if(  mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
 				&& mPosX >=(enemy2_position.x - enemy2_position.w) && mPosX <=(enemy2_position.x + enemy2_position.w)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 
 				if(  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
 				&& mPosY>=(enemy3_position.y - enemy3_position.h) && mPosY<=(enemy3_position.y + enemy3_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 
 				if(  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
 				&& mPosY>=(enemy4_position.y - enemy4_position.h) && mPosY<=(enemy4_position.y + enemy4_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 				if(  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
 				&& mPosY>=(enemy5_position.y - enemy5_position.h) && mPosY<=(enemy5_position.y + enemy5_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
@@ -1110,8 +1140,8 @@ void play(){
 				}
 
 				if((  mPosX >= (door_position.x-door_position.w) && mPosX <= (door_position.x+door_position.w) 
-				&& mPosY>=(door_position.y - door_position.h) && mPosY<=(door_position.y + door_position.h)) && points == 12){
-						Mix_PlayChannel( -1, levelup, 0 );puts("Level 2 Upgraded");++level; goto LEVEL;
+				&& mPosY>=(door_position.y - door_position.h) && mPosY<=(door_position.y + door_position.h)) && points == 7){
+						Mix_PlayChannel( -1, levelup, 0 );puts("Level 2 Upgraded");++level;total_coin+=points; goto LEVEL;
 				} 
 
 
@@ -1119,99 +1149,98 @@ void play(){
 
 
 				//Clear screen
-				SDL_SetRenderDrawColor( renderer, 47, 79, 79, 79 );
+				SDL_SetRenderDrawColor( renderer, 0, 0, 0, 0 );
 				SDL_RenderClear( renderer );
 
 
-				//Render wall
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	//SDL_RenderFillRect -> to fill rectangle with solid color 			
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
 				SDL_RenderFillRect( renderer, &wall_1 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
 				SDL_RenderFillRect( renderer, &wall_2 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_3 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_4 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_5 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_6 );
 				
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_7 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_8 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_9 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_10 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
 				SDL_RenderFillRect( renderer, &wall_11 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
 				SDL_RenderFillRect( renderer, &wall_12 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_13 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_14 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_15 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_16 );
 				
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_17 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_18 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_19 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_20 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
 				SDL_RenderFillRect( renderer, &wall_21 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
 				SDL_RenderFillRect( renderer, &wall_22 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_23 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_24 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_25 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_26 );
 				
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_27 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_28 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_29 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_30 );
 
 
@@ -1305,7 +1334,7 @@ void play(){
 				}
 		//Move the dot and check collision
 		player.move();
-		if(points>=1){
+		if(total_coin>=1){
 				++level; goto LEVEL;
 			} 
 
@@ -1356,44 +1385,44 @@ void play(){
 		SDL_Rect ccoin1_position;
 		ccoin1_position.x = 10;
 		ccoin1_position.y = 420;
-		ccoin1_position.w = 30;
-		ccoin1_position.h = 30;
+		ccoin1_position.w = 20;
+		ccoin1_position.h = 20;
 
 		SDL_Rect ccoin2_position;
 		ccoin2_position.x = 420;
 		ccoin2_position.y = 780;
-		ccoin2_position.w = 30;
-		ccoin2_position.h = 30;
+		ccoin2_position.w = 20;
+		ccoin2_position.h = 20;
 
 		SDL_Rect ccoin3_position;
 		ccoin3_position.x = 570;
 		ccoin3_position.y = 100;
-		ccoin3_position.w = 30;
-		ccoin3_position.h = 30;
+		ccoin3_position.w = 20;
+		ccoin3_position.h = 20;
 
 		SDL_Rect ccoin4_position;
 		ccoin4_position.x = 400;
 		ccoin4_position.y = 100;
-		ccoin4_position.w = 30;
-		ccoin4_position.h = 30;
+		ccoin4_position.w = 20;
+		ccoin4_position.h = 20;
 
 		SDL_Rect ccoin5_position;
 		ccoin5_position.x = 550;
 		ccoin5_position.y = 580;
-		ccoin5_position.w = 30;
-		ccoin5_position.h = 30;
+		ccoin5_position.w = 20;
+		ccoin5_position.h = 20;
 
 		SDL_Rect ccoin6_position;
 		ccoin6_position.x = 850;
 		ccoin6_position.y = 600;
-		ccoin6_position.w = 30;
-		ccoin6_position.h = 30;
+		ccoin6_position.w = 20;
+		ccoin6_position.h = 20;
 
 		SDL_Rect ccoin7_position;
 		ccoin7_position.x = 1250;
 		ccoin7_position.y = 600;
-		ccoin7_position.w = 30;
-		ccoin7_position.h = 30;
+		ccoin7_position.w = 20;
+		ccoin7_position.h = 20;
 
 
 		enemy =IMG_Load("enemy.png");
@@ -1643,12 +1672,21 @@ void play(){
 			wall_30.h = 96;
 
 
+int points=0; 
 
 		while(!quit){
 			while( SDL_PollEvent( &d ) != 0 ){
 					if( d.type == SDL_QUIT ){
 						quit = true;
 					}
+
+					if(d.key.keysym.scancode==SDL_SCANCODE_P){
+						pause_level=level;
+						pause_coin=total_coin;
+						goto Main_Menu;
+					}
+
+
 					player.handleEvent( d );	//Handle input for the dot
 					
 					
@@ -1667,53 +1705,58 @@ void play(){
 				
 				//collission with enemy
 				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 				if(  mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
 				&& mPosX >=(enemy2_position.x - enemy2_position.w) && mPosX <=(enemy2_position.x + enemy2_position.w)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 
 				if(  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
 				&& mPosY>=(enemy3_position.y - enemy3_position.h) && mPosY<=(enemy3_position.y + enemy3_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 
 				if(  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
 				&& mPosY>=(enemy4_position.y - enemy4_position.h) && mPosY<=(enemy4_position.y + enemy4_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 				if(  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
 				&& mPosY>=(enemy5_position.y - enemy5_position.h) && mPosY<=(enemy5_position.y + enemy5_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
@@ -1758,8 +1801,8 @@ void play(){
 				}
 
 				if((  mPosX >= (door_position.x-door_position.w) && mPosX <= (door_position.x+door_position.w) 
-				&& mPosY>=(door_position.y - door_position.h) && mPosY<=(door_position.y + door_position.h)) && points == 19){
-						Mix_PlayChannel( -1, levelup, 0 );puts("Level 3 Upgraded");++level; goto LEVEL;
+				&& mPosY>=(door_position.y - door_position.h) && mPosY<=(door_position.y + door_position.h)) && points == 7){
+						Mix_PlayChannel( -1, levelup, 0 );puts("Level 3 Upgraded");++level;total_coin+=points; goto LEVEL;
 				} 
 				
 				
@@ -1768,99 +1811,98 @@ void play(){
 
 
 				//Clear screen
-				SDL_SetRenderDrawColor( renderer, 47, 79, 79, 79 );
+				SDL_SetRenderDrawColor( renderer, 0, 0, 0, 0 );
 				SDL_RenderClear( renderer );
 
 
-				//Render wall
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	//SDL_RenderFillRect -> to fill rectangle with solid color 			
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
 				SDL_RenderFillRect( renderer, &wall_1 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
 				SDL_RenderFillRect( renderer, &wall_2 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_3 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_4 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_5 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_6 );
 				
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_7 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_8 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_9 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_10 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
 				SDL_RenderFillRect( renderer, &wall_11 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
 				SDL_RenderFillRect( renderer, &wall_12 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_13 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_14 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_15 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_16 );
 				
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_17 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_18 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_19 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_20 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
 				SDL_RenderFillRect( renderer, &wall_21 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
 				SDL_RenderFillRect( renderer, &wall_22 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_23 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_24 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_25 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_26 );
 				
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_27 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_28 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_29 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_30 );
 
 
@@ -1953,7 +1995,7 @@ void play(){
 				}
 		//Move the dot and check collision
 		player.move();
-		if(points>=1){
+		if(total_coin>=1){
 				++level; goto LEVEL;
 			} 
 
@@ -1995,69 +2037,69 @@ void play(){
 
 
 
-		ccoin =IMG_Load("coin.png");
+		ccoin =IMG_Load("gems.png");
 		ccoin_tex = SDL_CreateTextureFromSurface(renderer,ccoin);
 		SDL_FreeSurface(ccoin);
 
 		SDL_Rect ccoin1_position;
 		ccoin1_position.x = 10;
 		ccoin1_position.y = 200;
-		ccoin1_position.w = 30;
-		ccoin1_position.h = 30;
+		ccoin1_position.w = 20;
+		ccoin1_position.h = 20;
 
 		SDL_Rect ccoin2_position;
 		ccoin2_position.x = 420;
 		ccoin2_position.y = 300;
-		ccoin2_position.w = 30;
-		ccoin2_position.h = 30;
+		ccoin2_position.w = 20;
+		ccoin2_position.h = 20;
 
 		SDL_Rect ccoin3_position;
 		ccoin3_position.x = 480;
 		ccoin3_position.y = 220;
-		ccoin3_position.w = 30;
-		ccoin3_position.h = 30;
+		ccoin3_position.w = 20;
+		ccoin3_position.h = 20;
 
 		SDL_Rect ccoin4_position;
 		ccoin4_position.x = 400;
 		ccoin4_position.y = 50;
-		ccoin4_position.w = 30;
-		ccoin4_position.h = 30;
+		ccoin4_position.w = 20;
+		ccoin4_position.h = 20;
 
 		SDL_Rect ccoin5_position;
 		ccoin5_position.x = 510;
 		ccoin5_position.y = 400;
-		ccoin5_position.w = 30;
-		ccoin5_position.h = 30;
+		ccoin5_position.w = 20;
+		ccoin5_position.h = 20;
 
 		SDL_Rect ccoin6_position;
 		ccoin6_position.x = 850;
 		ccoin6_position.y = 780;
-		ccoin6_position.w = 30;
-		ccoin6_position.h = 30;
+		ccoin6_position.w = 20;
+		ccoin6_position.h = 20;
 
 		SDL_Rect ccoin7_position;
 		ccoin7_position.x = 1250;
 		ccoin7_position.y = 600;
-		ccoin7_position.w = 30;
-		ccoin7_position.h = 30;
+		ccoin7_position.w = 20;
+		ccoin7_position.h = 20;
 
 		SDL_Rect ccoin8_position;
 		ccoin8_position.x = 925;
 		ccoin8_position.y = 720;
-		ccoin8_position.w = 30;
-		ccoin8_position.h = 30;
+		ccoin8_position.w = 20;
+		ccoin8_position.h = 20;
 
 		SDL_Rect ccoin9_position;
 		ccoin9_position.x = 230;
 		ccoin9_position.y = 780;
-		ccoin9_position.w = 30;
-		ccoin9_position.h = 30;
+		ccoin9_position.w = 20;
+		ccoin9_position.h = 20;
 
 		SDL_Rect ccoin10_position;
 		ccoin10_position.x = 1240;
 		ccoin10_position.y = 5;
-		ccoin10_position.w = 30;
-		ccoin10_position.h = 30;
+		ccoin10_position.w = 20;
+		ccoin10_position.h = 20;
 
 
 		enemy =IMG_Load("enemy.png");
@@ -2328,12 +2370,20 @@ void play(){
 
 
 
+int points=0; 
 
 		while(!quit){
 			while( SDL_PollEvent( &d ) != 0 ){
 					if( d.type == SDL_QUIT ){
 						quit = true;
 					}
+
+					if(d.key.keysym.scancode==SDL_SCANCODE_P){
+						pause_level=level;
+						pause_coin=total_coin;
+						goto Main_Menu;
+					}
+
 					player.handleEvent( d );	//Handle input for the dot
 					
 					
@@ -2354,73 +2404,80 @@ void play(){
 				
 				//collission with enemy
 				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 				if(  mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
 				&& mPosX >=(enemy2_position.x - enemy2_position.w) && mPosX <=(enemy2_position.x + enemy2_position.w)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 
 				if(  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
 				&& mPosY>=(enemy3_position.y - enemy3_position.h) && mPosY<=(enemy3_position.y + enemy3_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 
 				if(  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
 				&& mPosY>=(enemy4_position.y - enemy4_position.h) && mPosY<=(enemy4_position.y + enemy4_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 				if(  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
 				&& mPosY>=(enemy5_position.y - enemy5_position.h) && mPosY<=(enemy5_position.y + enemy5_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 				if(  mPosX >= (enemy6_position.x-enemy6_position.w) && mPosX <= (enemy6_position.x+enemy6_position.w) 
 				&& mPosY>=(enemy6_position.y - enemy6_position.h) && mPosY<=(enemy6_position.y + enemy6_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 				if(  mPosX >= (enemy7_position.x-enemy7_position.w) && mPosX <= (enemy7_position.x+enemy7_position.w) 
 				&& mPosY>=(enemy7_position.y - enemy7_position.h) && mPosY<=(enemy7_position.y + enemy7_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
@@ -2483,106 +2540,105 @@ void play(){
 
 
 				if((  mPosX >= (door_position.x-door_position.w) && mPosX <= (door_position.x+door_position.w) 
-				&& mPosY>=(door_position.y - door_position.h) && mPosY<=(door_position.y + door_position.h)) && points == 29){
-						Mix_PlayChannel( -1, levelup, 0 );puts("Level 4 Upgraded");++level;goto LEVEL;
+				&& mPosY>=(door_position.y - door_position.h) && mPosY<=(door_position.y + door_position.h)) && points == 10){
+						Mix_PlayChannel( -1, levelup, 0 );puts("Level 4 Upgraded");++level;total_coin+=points;goto LEVEL;
 				} 
 
 				
 
 				//Clear screen
-				SDL_SetRenderDrawColor( renderer, 47, 79, 79, 79 );
+				SDL_SetRenderDrawColor( renderer, 0, 0, 0, 0 );
 				SDL_RenderClear( renderer );
 
 
-				//Render wall
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	//SDL_RenderFillRect -> to fill rectangle with solid color 			
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
 				SDL_RenderFillRect( renderer, &wall_1 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
 				SDL_RenderFillRect( renderer, &wall_2 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_3 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_4 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_5 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_6 );
 				
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_7 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_8 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_9 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_10 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
 				SDL_RenderFillRect( renderer, &wall_11 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
 				SDL_RenderFillRect( renderer, &wall_12 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_13 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_14 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_15 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_16 );
 				
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_17 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_18 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_19 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_20 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
 				SDL_RenderFillRect( renderer, &wall_21 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
 				SDL_RenderFillRect( renderer, &wall_22 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_23 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_24 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_25 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_26 );
 				
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_27 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_28 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_29 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_30 );
 
 
@@ -2686,7 +2742,7 @@ void play(){
 				}
 		//Move the dot and check collision
 		player.move();
-		if(points>=1){
+		if(total_coin>=1){
 				++level; goto LEVEL;
 			} 
 
@@ -2721,7 +2777,7 @@ void play(){
 
 		Mix_PlayMusic( gMusic2, -1 );		// playing music
 
-		door =IMG_Load("ucn.png");
+		door =IMG_Load("gemss.png");
 		door_tex = SDL_CreateTextureFromSurface(renderer,door);
 		SDL_FreeSurface(door);
 		
@@ -2733,69 +2789,69 @@ void play(){
 
 
 
-		ccoin =IMG_Load("coin.png");
+		ccoin =IMG_Load("gems.png");
 		ccoin_tex = SDL_CreateTextureFromSurface(renderer,ccoin);
 		SDL_FreeSurface(ccoin);
 
 		SDL_Rect ccoin1_position;
 		ccoin1_position.x = 10;
 		ccoin1_position.y = 700;
-		ccoin1_position.w = 30;
-		ccoin1_position.h = 30;
+		ccoin1_position.w = 20;
+		ccoin1_position.h = 20;
 
 		SDL_Rect ccoin2_position;
 		ccoin2_position.x = 320;
 		ccoin2_position.y = 170;
-		ccoin2_position.w = 30;
-		ccoin2_position.h = 30;
+		ccoin2_position.w = 20;
+		ccoin2_position.h = 20;
 
 		SDL_Rect ccoin3_position;
 		ccoin3_position.x = 520;
 		ccoin3_position.y = 600;
-		ccoin3_position.w = 30;
-		ccoin3_position.h = 30;
+		ccoin3_position.w = 20;
+		ccoin3_position.h = 20;
 
 		SDL_Rect ccoin4_position;
 		ccoin4_position.x = 570;
 		ccoin4_position.y = 500;
-		ccoin4_position.w = 30;
-		ccoin4_position.h = 30;
+		ccoin4_position.w = 20;
+		ccoin4_position.h = 20;
 
 		SDL_Rect ccoin5_position;
 		ccoin5_position.x = 570;
 		ccoin5_position.y = 340;
-		ccoin5_position.w = 30;
-		ccoin5_position.h = 30;
+		ccoin5_position.w = 20;
+		ccoin5_position.h = 20;
 
 		SDL_Rect ccoin6_position;
 		ccoin6_position.x = 250;
 		ccoin6_position.y = 600;
-		ccoin6_position.w = 30;
-		ccoin6_position.h = 30;
+		ccoin6_position.w = 20;
+		ccoin6_position.h = 20;
 
 		SDL_Rect ccoin7_position;
 		ccoin7_position.x = 800;
 		ccoin7_position.y = 340;
-		ccoin7_position.w = 30;
-		ccoin7_position.h = 30;
+		ccoin7_position.w = 20;
+		ccoin7_position.h = 20;
 
 		SDL_Rect ccoin8_position;
 		ccoin8_position.x = 1145;
 		ccoin8_position.y = 450;
-		ccoin8_position.w = 30;
-		ccoin8_position.h = 30;
+		ccoin8_position.w = 20;
+		ccoin8_position.h = 20;
 
 		SDL_Rect ccoin9_position;
 		ccoin9_position.x = 1240;
 		ccoin9_position.y = 280;
-		ccoin9_position.w = 30;
-		ccoin9_position.h = 30;
+		ccoin9_position.w = 20;
+		ccoin9_position.h = 20;
 
 		SDL_Rect ccoin10_position;
 		ccoin10_position.x = 900;
 		ccoin10_position.y = 5;
-		ccoin10_position.w = 30;
-		ccoin10_position.h = 30;
+		ccoin10_position.w = 20;
+		ccoin10_position.h = 20;
 
 
 		enemy =IMG_Load("enemy.png");
@@ -3070,13 +3126,20 @@ void play(){
          	wall_30.h = 80*1;
 
 
-
+int points=0; 
 
 		while(!quit){
 			while( SDL_PollEvent( &d ) != 0 ){
 					if( d.type == SDL_QUIT ){
 						quit = true;
 					}
+
+					if(d.key.keysym.scancode==SDL_SCANCODE_P){
+						pause_level=level;
+						pause_coin=total_coin;
+						goto Main_Menu;
+					}
+
 					player.handleEvent( d );	//Handle input for the dot
 					
 					
@@ -3098,83 +3161,91 @@ void play(){
 				
 				//collission with enemy
 				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 				if(  mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
 				&& mPosX >=(enemy2_position.x - enemy2_position.w) && mPosX <=(enemy2_position.x + enemy2_position.w)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 
 				if(  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
 				&& mPosY>=(enemy3_position.y - enemy3_position.h) && mPosY<=(enemy3_position.y + enemy3_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 
 				if(  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
 				&& mPosY>=(enemy4_position.y - enemy4_position.h) && mPosY<=(enemy4_position.y + enemy4_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 				if(  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
 				&& mPosY>=(enemy5_position.y - enemy5_position.h) && mPosY<=(enemy5_position.y + enemy5_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 				if(  mPosX >= (enemy6_position.x-enemy6_position.w) && mPosX <= (enemy6_position.x+enemy6_position.w) 
 				&& mPosY>=(enemy6_position.y - enemy6_position.h) && mPosY<=(enemy6_position.y + enemy6_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 				if(  mPosX >= (enemy7_position.x-enemy7_position.w) && mPosX <= (enemy7_position.x+enemy7_position.w) 
 				&& mPosY>=(enemy7_position.y - enemy7_position.h) && mPosY<=(enemy7_position.y + enemy7_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
 				if(  mPosX >= (enemy8_position.x-enemy8_position.w) && mPosX <= (enemy8_position.x+enemy8_position.w) 
 				&& mPosY>=(enemy8_position.y - enemy8_position.h) && mPosY<=(enemy8_position.y + enemy8_position.h)) {
-					bool opt = GameOver(points);
+					total_coin+=points; points=0;
+					bool opt = GameOver(total_coin);
 					if(opt){
-						level=1;points=0;goto LEVEL;
+						level=1;total_coin=0;goto LEVEL;
 					}
-					else InputTaken(points);
+					else InputTaken(total_coin);
 					goto Main_Menu;
 				}
 
@@ -3237,16 +3308,19 @@ void play(){
 
 
 				if((  mPosX >= (door_position.x-door_position.w) && mPosX <= (door_position.x+door_position.w) 
-				&& mPosY>=(door_position.y - door_position.h) && mPosY<=(door_position.y + door_position.h)) && points == 39){
+				&& mPosY>=(door_position.y - door_position.h) && mPosY<=(door_position.y + door_position.h)) && points == 10){
 						Mix_PlayChannel( -1, victory, 0 );
 						puts("You Win");
-						win =IMG_Load("win1.jpg");
+						SDL_SetRenderDrawColor(renderer,240, 243, 244 ,255);
+						SDL_RenderClear(renderer);
+						win =IMG_Load("win.png");
 						win_tex = SDL_CreateTextureFromSurface(renderer,win);
 						SDL_FreeSurface(win);
-						SDL_RenderCopy(renderer,win_tex,NULL,NULL);
+						SDL_Rect gmo = {150, 80, 1000, 800};
+						SDL_RenderCopy(renderer,win_tex,NULL,&gmo);
 						SDL_RenderPresent(renderer);
 						SDL_Delay(3000);
-						InputTaken(points);
+						InputTaken(total_coin);
 						Mix_PlayMusic( gMusic3, -1 );		// playing music
 						goto Main_Menu;
 				} 
@@ -3256,99 +3330,98 @@ void play(){
 
 
 				//Clear screen
-				SDL_SetRenderDrawColor( renderer, 47, 79, 79, 79 );
+				SDL_SetRenderDrawColor( renderer, 0, 0, 0, 0 );
 				SDL_RenderClear( renderer );
 
 
-				//Render wall
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	//SDL_RenderFillRect -> to fill rectangle with solid color 			
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
 				SDL_RenderFillRect( renderer, &wall_1 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
 				SDL_RenderFillRect( renderer, &wall_2 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_3 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_4 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_5 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_6 );
 				
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_7 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_8 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_9 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_10 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
 				SDL_RenderFillRect( renderer, &wall_11 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
 				SDL_RenderFillRect( renderer, &wall_12 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_13 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_14 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_15 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_16 );
 				
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_17 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_18 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_19 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_20 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );		//SDL_RenderFillRect -> to fill rectangle with solid color 			
 				SDL_RenderFillRect( renderer, &wall_21 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	//SDL_RenderDarwRect -> to draw rectangle with color
 				SDL_RenderFillRect( renderer, &wall_22 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_23 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_24 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_25 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_26 );
 				
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_27 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_28 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_29 );
 
-				SDL_SetRenderDrawColor( renderer, 0, 255, 255, 255 );	
+				SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );	
 				SDL_RenderFillRect( renderer, &wall_30 );
 
 
@@ -3427,8 +3500,9 @@ void play(){
     else if(menu_button==2){
         puts("You Pressed SCORE Button");
 		
-		help =IMG_Load("score.jpeg");
+		help =IMG_Load("score.png");
 	    help_tex = SDL_CreateTextureFromSurface(renderer,help);
+		SDL_FreeSurface(help);
 		
         SDL_Event h;
 		bool running = true;
@@ -3453,8 +3527,9 @@ void play(){
 
 	else if(menu_button==3){
 		puts("You Pressed HELP Button");
-		score =IMG_Load("help.jpeg");
+		score =IMG_Load("help.png");
 	    score_tex = SDL_CreateTextureFromSurface(renderer,score);
+		SDL_FreeSurface(score);
 
 		SDL_Event c;
 		bool running = true;

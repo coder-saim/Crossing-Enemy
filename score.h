@@ -1,12 +1,18 @@
 void InputTaken(){
-	//Main loop flag
+
+			SDL_Surface *sam =IMG_Load("score.png");
+	    	SDL_Texture *sam_tex = SDL_CreateTextureFromSurface(renderer,sam);
+			SDL_FreeSurface(sam);
+
+
+			//Main loop flag
 			bool quit = false;
 
 			//Event handler
 			SDL_Event e;
 
 			//Set text color as black
-			SDL_Color textColor = { 100, 149, 237, 0 };
+			SDL_Color textColor = {0, 0, 128,0 };
 
 			gPromptTextTexture.loadFromRenderedText( "Enter Your Name ", textColor);
 			//The current input text.
@@ -89,6 +95,7 @@ void InputTaken(){
 				//Clear screen
 				SDL_SetRenderDrawColor( renderer, 47, 79, 79, 79 );
 				SDL_RenderClear( renderer );
+				SDL_RenderCopy(renderer,sam_tex,NULL,NULL);
 
 				//Render text textures
 				gPromptTextTexture.render( ( WINDOW_WIDTH - gPromptTextTexture.getWidth() ) / 2, 250 );
@@ -115,14 +122,18 @@ void InputTaken(){
 
 
 void InputTaken(int x){
-	//Main loop flag
+			SDL_Surface *sam =IMG_Load("score.png");
+	    	SDL_Texture *sam_tex = SDL_CreateTextureFromSurface(renderer,sam);
+			SDL_FreeSurface(sam);
+
+			//Main loop flag
 			bool quit = false;
 
 			//Event handler
 			SDL_Event e;
 
 			//Set text color as black
-			SDL_Color textColor = { 0, 255, 0, 0 };
+			SDL_Color textColor = { 0, 0, 128, 0 };
 
 			gPromptTextTexture.loadFromRenderedText( "Enter Your Name ", textColor);
 			//The current input text.
@@ -130,9 +141,9 @@ void InputTaken(int x){
 			gInputTextTexture.loadFromRenderedText( inputText.c_str(), textColor );
 
 			char Text[299];sprintf(Text, "Your Score is : %2d", x);
-			SDL_Surface* tmp = TTF_RenderText_Solid(font1, Text, {0, 255, 0});
+			SDL_Surface* tmp = TTF_RenderText_Solid(font1, Text, {0, 0, 128});
 			SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, tmp);
-			SDL_Rect dest2 = {360, 250, 540, 80};
+			SDL_Rect dest2 = {360, 270, 540, 80};
 
 			//Enable text input
 			SDL_StartTextInput();
@@ -210,6 +221,7 @@ void InputTaken(int x){
 				//Clear screen
 				SDL_SetRenderDrawColor( renderer, 47, 79, 79, 79 );
 				SDL_RenderClear( renderer );
+				SDL_RenderCopy(renderer,sam_tex,NULL,NULL);
 
 				//Render text textures
 				gPromptTextTexture.render( ( WINDOW_WIDTH - gPromptTextTexture.getWidth() ) / 2, 350 );
@@ -251,8 +263,7 @@ void HighScore(){
 	FILE* ScoreFile = fopen("HighestScores.dat", "r");
 	int num;
 	char playerName[100];
-	while (fscanf(ScoreFile, "%d %s", &num, playerName) != EOF)
-	{
+	while (fscanf(ScoreFile, "%d %s", &num, playerName) != EOF){
 		pair<int, string> input;
 		input.first = num;
 		string thisName = playerName;
@@ -282,7 +293,7 @@ void HighScore(){
 		char Text[30]="... Highest Scores ...";
 		SDL_Surface* tmp = TTF_RenderText_Solid(font1, Text, {0, 0, 128});
 		SDL_Texture* tex1 = SDL_CreateTextureFromSurface(renderer, tmp);
-		SDL_Rect dest = {280, 130, 800, 100}; SDL_RenderCopy(renderer, tex1, NULL, &dest);
+		SDL_Rect dest = {280, 150, 700, 80}; SDL_RenderCopy(renderer, tex1, NULL, &dest);
 
 
 
@@ -290,11 +301,11 @@ void HighScore(){
 
 		string s = highScores[i].second;
 		int value = highScores[i].first;
-		char nameP[100],name[100];
+		char nameP[50],name[50];
 		strcpy(nameP,s.c_str());
 		sprintf(name, "%-7s", nameP);
 		
-		char text[100]; sprintf(text, "%3d", value);
+		char text[50]; sprintf(text, "%3d", value);
 		//printf("%s\n", text);
 
 		SDL_Surface* tmp = TTF_RenderText_Solid(font1, name, textColor);
@@ -341,11 +352,11 @@ bool GameOver(int x){
  						running = false;
  						break;
 					case SDL_MOUSEBUTTONDOWN:
-						if(s.motion.x>=500 && s.motion.x<=700 && s.motion.y>=600 && s.motion.y<=660){
+						if(s.motion.x>=570 && s.motion.x<=710 && s.motion.y>=665 && s.motion.y<=700){
 							return true;
 							break;
 						}
-						if(s.motion.x>=500 && s.motion.x<=700 && s.motion.y>=600 && s.motion.y<=730){
+						if(s.motion.x>=565 && s.motion.x<=740 && s.motion.y>=720 && s.motion.y<=755){
 							Mix_PlayMusic( gMusic3, -1 );		// playing music
 							return false;
 							break;
@@ -353,47 +364,43 @@ bool GameOver(int x){
  				}
              }
 
-	SDL_SetRenderDrawColor(renderer,240, 243, 244 ,255);
-	SDL_RenderClear(renderer);
+	//SDL_SetRenderDrawColor(renderer,240, 243, 244 ,255);
+	//SDL_RenderClear(renderer);
 
-	SDL_Surface* ssr =IMG_Load("score.jpeg");
-	SDL_Texture* ssr_tex = SDL_CreateTextureFromSurface(renderer,ssr);
-	SDL_RenderCopy(renderer,ssr_tex,NULL,NULL);
 
 
 	gameover =IMG_Load("gameover.png");
 	gameover_tex = SDL_CreateTextureFromSurface(renderer,gameover);
 	SDL_FreeSurface(gameover);
-	SDL_Rect gmo = {400, 50, 500, 400};
-	SDL_RenderCopy(renderer,gameover_tex,NULL,&gmo);
+	SDL_RenderCopy(renderer,gameover_tex,NULL,NULL);
 	
 
 	char Text0[30];sprintf(Text0, "Your Score is : %2d", x);
 	SDL_Surface* tmp = TTF_RenderText_Solid(font1, Text0, {0, 0, 255});
 	SDL_Texture* tex0 = SDL_CreateTextureFromSurface(renderer, tmp);
-	SDL_Rect dest0 = {410, 400, 540, 100};SDL_RenderCopy(renderer, tex0, NULL, &dest0);
+	SDL_Rect dest0 = {430, 535, 450, 60};SDL_RenderCopy(renderer, tex0, NULL, &dest0);
 	SDL_FreeSurface(tmp);
 
 
-	char Text[30]="Wanna Play Again ?";
+	/*char Text[30]="Wanna Play Again ?";
 	tmp = TTF_RenderText_Solid(font1, Text, {0, 0, 255});
 	SDL_Texture* tex2 = SDL_CreateTextureFromSurface(renderer, tmp);
-	SDL_Rect dest3 = {380, 500, 600, 100}; SDL_RenderCopy(renderer, tex2, NULL, &dest3);
+	SDL_Rect dest3 = {380, 500, 500, 80}; SDL_RenderCopy(renderer, tex2, NULL, &dest3);
 	SDL_FreeSurface(tmp);
 
 
-	char Text1[10]="Yup !";
+	char Text1[10]="1. Yup !";
 	tmp = TTF_RenderText_Solid(font1, Text1, {0, 0, 255});
 	SDL_Texture* tex3 = SDL_CreateTextureFromSurface(renderer, tmp);
-	SDL_Rect dest4 = {550, 600, 200, 60}; SDL_RenderCopy(renderer, tex3, NULL, &dest4);
+	SDL_Rect dest4 = {550, 600, 200, 50}; SDL_RenderCopy(renderer, tex3, NULL, &dest4);
 	SDL_FreeSurface(tmp);
 
 
-	char Text2[10]="Nope !";
+	char Text2[10]="2. Nope !";
 	tmp = TTF_RenderText_Solid(font1, Text2, {0, 0, 255});
 	SDL_Texture* tex4 = SDL_CreateTextureFromSurface(renderer, tmp);
-	SDL_Rect dest5 = {550, 670, 200, 60}; SDL_RenderCopy(renderer, tex4, NULL, &dest5);
-	SDL_FreeSurface(tmp);
+	SDL_Rect dest5 = {550, 670, 200, 50}; SDL_RenderCopy(renderer, tex4, NULL, &dest5);
+	SDL_FreeSurface(tmp);*/
 
 
 
