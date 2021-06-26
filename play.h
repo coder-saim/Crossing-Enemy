@@ -1,3 +1,6 @@
+#pragma once
+#ifndef PLAY_H
+#define PLAY_H
 #include"menu.h"
 #include"player.h"
 #include"player2.h"
@@ -3954,3 +3957,4 @@ void end(){
 
 
 
+#endif
