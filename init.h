@@ -1,3 +1,5 @@
+#ifndef INIT_H
+#define INIT_H
 #include<stdio.h>
 #include <iostream>
 #include<SDL2/SDL.h>
@@ -45,6 +47,8 @@ SDL_Texture* ccoin_tex = NULL;
 SDL_Surface* door = NULL;
 SDL_Texture* door_tex = NULL;
 SDL_Surface* tmp = NULL;
+SDL_Surface* Specialcoin = NULL;
+SDL_Texture* Specialcoin_tex = NULL;
 
 Mix_Music *gMusic1 = NULL,*gMusic2 = NULL,*gMusic3 = NULL;
 Mix_Chunk *death = NULL,*coin = NULL,*victory = NULL,*levelup = NULL;
@@ -130,3 +134,5 @@ bool init(){
 
     return true;
 }
+
+#endif

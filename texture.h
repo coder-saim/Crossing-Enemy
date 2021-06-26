@@ -1,3 +1,5 @@
+#ifndef TEXTURE_H
+#define TEXTURE_H
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_timer.h>
@@ -227,3 +229,6 @@ void close()
 	IMG_Quit();
 	SDL_Quit();
 }
+
+
+#endif

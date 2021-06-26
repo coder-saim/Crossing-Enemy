@@ -10,6 +10,7 @@
 int pause_coin=10;
 int pause_level=2;
 int level=1;
+int collissionpixcount=0;
 
 void play(){
 
@@ -74,6 +75,20 @@ void play(){
 		door_position.h = 30;
 
 
+		//Special Coin
+        bool SpecialcoinB = false;
+        Specialcoin = IMG_Load("Specialcoin.png");
+		Specialcoin_tex = SDL_CreateTextureFromSurface(renderer,Specialcoin);
+		SDL_FreeSurface(Specialcoin);
+
+        SDL_Rect Specialcoin_position;
+		Specialcoin_position.x = 640;
+		Specialcoin_position.y = 40;
+		Specialcoin_position.w = 30;
+		Specialcoin_position.h = 30;
+		
+
+	// NON-Special COIN
 		ccoin =IMG_Load("coin.png");
 		ccoin_tex = SDL_CreateTextureFromSurface(renderer,ccoin);
 		SDL_FreeSurface(ccoin);
@@ -258,10 +273,10 @@ void play(){
 			wall_12.h = 50;
 
 			SDL_Rect wall_13;
-			wall_13.x = 700;
-			wall_13.y = 170;
+			wall_13.x = 680;
+			wall_13.y = 0;
 			wall_13.w = 50;
-			wall_13.h = 300;
+			wall_13.h = 460;
 
 			SDL_Rect wall_14;
 			wall_14.x = 920;
@@ -400,62 +415,114 @@ void play(){
 				
 				//collission with enemy
 				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
+					
 				}
 
 				if(  mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
 				&& mPosX >=(enemy2_position.x - enemy2_position.w) && mPosX <=(enemy2_position.x + enemy2_position.w)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 
 				if(  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
 				&& mPosY>=(enemy3_position.y - enemy3_position.h) && mPosY<=(enemy3_position.y + enemy3_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 
 				if(  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
 				&& mPosY>=(enemy4_position.y - enemy4_position.h) && mPosY<=(enemy4_position.y + enemy4_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 				if(  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
 				&& mPosY>=(enemy5_position.y - enemy5_position.h) && mPosY<=(enemy5_position.y + enemy5_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
+				
+				//collide with Specialcoin
 
+                if(  mPosX >= (Specialcoin_position.x-Specialcoin_position.w) && mPosX <= (Specialcoin_position.x+Specialcoin_position.w) 
+				&& mPosY>=(Specialcoin_position.y - Specialcoin_position.h) && mPosY<=(Specialcoin_position.y + Specialcoin_position.h)){
+						Mix_PlayChannel( -1, coin, 0 );
+						Specialcoin_position.w=0;
+						Specialcoin_position.h=0; 
+						SpecialcoinB = true;
+
+						gPlayerTexture.loadFromFile( "pac2.png" );
+
+						collissionpixcount = 0;
+
+				} 
 
 
 				//Collide with Coin
@@ -600,6 +667,9 @@ void play(){
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy4_position);
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy5_position);
 				
+				//Rendering Specialcoin
+                SDL_RenderCopy(renderer,Specialcoin_tex,NULL,&Specialcoin_position);
+
 
 				//Rendering coin
 				SDL_RenderCopy(renderer,ccoin_tex,NULL,&ccoin1_position);
@@ -721,8 +791,20 @@ void play(){
 		door_position.w = 30;
 		door_position.h = 30;
 
+		//Special Coin
+        bool SpecialcoinB = false;
+        Specialcoin = IMG_Load("Specialcoin.png");
+		Specialcoin_tex = SDL_CreateTextureFromSurface(renderer,Specialcoin);
+		SDL_FreeSurface(Specialcoin);
 
+        SDL_Rect Specialcoin_position;
+		Specialcoin_position.x = 20;
+		Specialcoin_position.y = 820;
+		Specialcoin_position.w = 30;
+		Specialcoin_position.h = 30;
+		
 
+	// NON-Special COIN
 		ccoin =IMG_Load("coin.png");
 		ccoin_tex = SDL_CreateTextureFromSurface(renderer,ccoin);
 		SDL_FreeSurface(ccoin);
@@ -1047,60 +1129,113 @@ int points=0;
 				
 				//collission with enemy
 				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 				if(  mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
 				&& mPosX >=(enemy2_position.x - enemy2_position.w) && mPosX <=(enemy2_position.x + enemy2_position.w)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 
 				if(  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
 				&& mPosY>=(enemy3_position.y - enemy3_position.h) && mPosY<=(enemy3_position.y + enemy3_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 
 				if(  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
 				&& mPosY>=(enemy4_position.y - enemy4_position.h) && mPosY<=(enemy4_position.y + enemy4_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 				if(  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
 				&& mPosY>=(enemy5_position.y - enemy5_position.h) && mPosY<=(enemy5_position.y + enemy5_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
+
+				//collide with Specialcoin
+
+                if(  mPosX >= (Specialcoin_position.x-Specialcoin_position.w) && mPosX <= (Specialcoin_position.x+Specialcoin_position.w) 
+				&& mPosY>=(Specialcoin_position.y - Specialcoin_position.h) && mPosY<=(Specialcoin_position.y + Specialcoin_position.h)){
+						Mix_PlayChannel( -1, coin, 0 );
+						Specialcoin_position.w=0;
+						Specialcoin_position.h=0; 
+						SpecialcoinB = true;
+
+						gPlayerTexture.loadFromFile( "pac2.png" );
+
+						collissionpixcount = 0;
+
+				} 
+
 
 
 
@@ -1257,6 +1392,8 @@ int points=0;
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy4_position);
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy5_position);
 				
+				//Rendering Specialcoin
+                SDL_RenderCopy(renderer,Specialcoin_tex,NULL,&Specialcoin_position);
 
 				//Rendering coin
 				SDL_RenderCopy(renderer,ccoin_tex,NULL,&ccoin1_position);
@@ -1379,8 +1516,20 @@ int points=0;
 		door_position.w = 30;
 		door_position.h = 30;
 
+		//Special Coin
+        bool SpecialcoinB = false;
+        Specialcoin = IMG_Load("Specialcoin.png");
+		Specialcoin_tex = SDL_CreateTextureFromSurface(renderer,Specialcoin);
+		SDL_FreeSurface(Specialcoin);
 
+        SDL_Rect Specialcoin_position;
+		Specialcoin_position.x = 30;
+		Specialcoin_position.y = 820;
+		Specialcoin_position.w = 30;
+		Specialcoin_position.h = 30;
+		
 
+		// NON-Special COIN
 		ccoin =IMG_Load("coin.png");
 		ccoin_tex = SDL_CreateTextureFromSurface(renderer,ccoin);
 		SDL_FreeSurface(ccoin);
@@ -1709,62 +1858,109 @@ int points=0;
 				
 				//collission with enemy
 				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 				if(  mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
 				&& mPosX >=(enemy2_position.x - enemy2_position.w) && mPosX <=(enemy2_position.x + enemy2_position.w)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 
 				if(  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
 				&& mPosY>=(enemy3_position.y - enemy3_position.h) && mPosY<=(enemy3_position.y + enemy3_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 
 				if(  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
 				&& mPosY>=(enemy4_position.y - enemy4_position.h) && mPosY<=(enemy4_position.y + enemy4_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 				if(  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
 				&& mPosY>=(enemy5_position.y - enemy5_position.h) && mPosY<=(enemy5_position.y + enemy5_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
+				//collide with Specialcoin
 
+                if(  mPosX >= (Specialcoin_position.x-Specialcoin_position.w) && mPosX <= (Specialcoin_position.x+Specialcoin_position.w) 
+				&& mPosY>=(Specialcoin_position.y - Specialcoin_position.h) && mPosY<=(Specialcoin_position.y + Specialcoin_position.h)){
+						Mix_PlayChannel( -1, coin, 0 );
+						Specialcoin_position.w=0;
+						Specialcoin_position.h=0; 
+						SpecialcoinB = true;
 
+						gPlayerTexture.loadFromFile( "pac2.png" );
+
+						collissionpixcount = 0;
+
+				} 
 
 
 				//Collide with Coin
@@ -1919,6 +2115,9 @@ int points=0;
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy3_position);
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy4_position);
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy5_position);
+
+				//Rendering Specialcoin
+                SDL_RenderCopy(renderer,Specialcoin_tex,NULL,&Specialcoin_position);
 				
 
 				//Rendering coin
@@ -2039,8 +2238,20 @@ int points=0;
 		door_position.w = 30;
 		door_position.h = 30;
 
+		//Special Coin
+        bool SpecialcoinB = false;
+        Specialcoin = IMG_Load("Specialcoin.png");
+		Specialcoin_tex = SDL_CreateTextureFromSurface(renderer,Specialcoin);
+		SDL_FreeSurface(Specialcoin);
 
+        SDL_Rect Specialcoin_position;
+		Specialcoin_position.x = 940;
+		Specialcoin_position.y = 900;
+		Specialcoin_position.w = 30;
+		Specialcoin_position.h = 30;
+		
 
+	// NON-Special COIN
 		ccoin =IMG_Load("gems.png");
 		ccoin_tex = SDL_CreateTextureFromSurface(renderer,ccoin);
 		SDL_FreeSurface(ccoin);
@@ -2409,83 +2620,146 @@ int points=0;
 				
 				//collission with enemy
 				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 				if(  mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
 				&& mPosX >=(enemy2_position.x - enemy2_position.w) && mPosX <=(enemy2_position.x + enemy2_position.w)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 
 				if(  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
 				&& mPosY>=(enemy3_position.y - enemy3_position.h) && mPosY<=(enemy3_position.y + enemy3_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 
 				if(  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
 				&& mPosY>=(enemy4_position.y - enemy4_position.h) && mPosY<=(enemy4_position.y + enemy4_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 				if(  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
 				&& mPosY>=(enemy5_position.y - enemy5_position.h) && mPosY<=(enemy5_position.y + enemy5_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 				if(  mPosX >= (enemy6_position.x-enemy6_position.w) && mPosX <= (enemy6_position.x+enemy6_position.w) 
 				&& mPosY>=(enemy6_position.y - enemy6_position.h) && mPosY<=(enemy6_position.y + enemy6_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 				if(  mPosX >= (enemy7_position.x-enemy7_position.w) && mPosX <= (enemy7_position.x+enemy7_position.w) 
 				&& mPosY>=(enemy7_position.y - enemy7_position.h) && mPosY<=(enemy7_position.y + enemy7_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
+				//collide with Specialcoin
+
+                if(  mPosX >= (Specialcoin_position.x-Specialcoin_position.w) && mPosX <= (Specialcoin_position.x+Specialcoin_position.w) 
+				&& mPosY>=(Specialcoin_position.y - Specialcoin_position.h) && mPosY<=(Specialcoin_position.y + Specialcoin_position.h)){
+						Mix_PlayChannel( -1, coin, 0 );
+						Specialcoin_position.w=0;
+						Specialcoin_position.h=0; 
+						SpecialcoinB = true;
+
+						gPlayerTexture.loadFromFile( "pac2.png" );
+
+						collissionpixcount = 0;
+
+				} 
 
 
 
@@ -2658,6 +2932,9 @@ int points=0;
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy5_position);
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy6_position);
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy7_position);
+
+				//Rendering Specialcoin
+                SDL_RenderCopy(renderer,Specialcoin_tex,NULL,&Specialcoin_position);
 				
 
 				//Rendering coin
@@ -2793,7 +3070,20 @@ int points=0;
 		door_position.h = 30;
 
 
+		//Special Coin
+        bool SpecialcoinB = false;
+        Specialcoin = IMG_Load("Specialcoin.png");
+		Specialcoin_tex = SDL_CreateTextureFromSurface(renderer,Specialcoin);
+		SDL_FreeSurface(Specialcoin);
 
+        SDL_Rect Specialcoin_position;
+		Specialcoin_position.x = 500;
+		Specialcoin_position.y = 740;
+		Specialcoin_position.w = 30;
+		Specialcoin_position.h = 30;
+		
+
+	// NON-Special COIN
 		ccoin =IMG_Load("gems.png");
 		ccoin_tex = SDL_CreateTextureFromSurface(renderer,ccoin);
 		SDL_FreeSurface(ccoin);
@@ -3167,93 +3457,164 @@ int points=0;
 				
 				//collission with enemy
 				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 				if(  mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
 				&& mPosX >=(enemy2_position.x - enemy2_position.w) && mPosX <=(enemy2_position.x + enemy2_position.w)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 
 				if(  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
 				&& mPosY>=(enemy3_position.y - enemy3_position.h) && mPosY<=(enemy3_position.y + enemy3_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 
 				if(  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
 				&& mPosY>=(enemy4_position.y - enemy4_position.h) && mPosY<=(enemy4_position.y + enemy4_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 				if(  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
 				&& mPosY>=(enemy5_position.y - enemy5_position.h) && mPosY<=(enemy5_position.y + enemy5_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 				if(  mPosX >= (enemy6_position.x-enemy6_position.w) && mPosX <= (enemy6_position.x+enemy6_position.w) 
 				&& mPosY>=(enemy6_position.y - enemy6_position.h) && mPosY<=(enemy6_position.y + enemy6_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 				if(  mPosX >= (enemy7_position.x-enemy7_position.w) && mPosX <= (enemy7_position.x+enemy7_position.w) 
 				&& mPosY>=(enemy7_position.y - enemy7_position.h) && mPosY<=(enemy7_position.y + enemy7_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 				if(  mPosX >= (enemy8_position.x-enemy8_position.w) && mPosX <= (enemy8_position.x+enemy8_position.w) 
 				&& mPosY>=(enemy8_position.y - enemy8_position.h) && mPosY<=(enemy8_position.y + enemy8_position.h)) {
-					total_coin+=points; points=0;
-					bool opt = GameOver(total_coin);
-					if(opt){
-						level=1;total_coin=0;goto LEVEL;
+					if(SpecialcoinB == false){
+						total_coin+=points; points = 0;
+						bool opt = GameOver(total_coin);
+						if(opt){
+							level = 1 ;total_coin = 0;goto LEVEL;
+						}
+						else InputTaken(total_coin);
+						goto Main_Menu;
 					}
-					else InputTaken(total_coin);
-					goto Main_Menu;
+					else if(collissionpixcount < 14){
+							collissionpixcount++;
+							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+					}
+					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
+
+				//collide with Specialcoin
+
+                if(  mPosX >= (Specialcoin_position.x-Specialcoin_position.w) && mPosX <= (Specialcoin_position.x+Specialcoin_position.w) 
+				&& mPosY>=(Specialcoin_position.y - Specialcoin_position.h) && mPosY<=(Specialcoin_position.y + Specialcoin_position.h)){
+						Mix_PlayChannel( -1, coin, 0 );
+						Specialcoin_position.w=0;
+						Specialcoin_position.h=0; 
+						SpecialcoinB = true;
+
+						gPlayerTexture.loadFromFile( "pac2.png" );
+
+						collissionpixcount = 0;
+
+				} 
 
 
 
@@ -3443,6 +3804,9 @@ int points=0;
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy6_position);
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy7_position);
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy8_position);
+
+				//Rendering Specialcoin
+                SDL_RenderCopy(renderer,Specialcoin_tex,NULL,&Specialcoin_position);
 				
 
 				//Rendering coin
