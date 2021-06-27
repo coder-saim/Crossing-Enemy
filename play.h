@@ -24,7 +24,7 @@ void play(){
 
     if(menu_button==1 || menu_button==11){
 		Mix_HaltMusic();
-		InputTaken();
+		if(menu_button==1) InputTaken();
 
 		if(menu_button==11){
 			total_coin=pause_coin;
