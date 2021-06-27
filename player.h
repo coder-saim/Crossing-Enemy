@@ -122,10 +122,10 @@ void Player::handleEvent( SDL_Event& e ){
 	if( e.type == SDL_KEYDOWN && e.key.repeat == 0 ){
         //Adjust the velocity
         switch( e.key.keysym.sym ){
-            case SDLK_UP: mVelY -= Player_VEL; break;
-            case SDLK_DOWN: mVelY += Player_VEL; break;
-            case SDLK_LEFT: mVelX -= Player_VEL; break;
-            case SDLK_RIGHT: mVelX += Player_VEL; break;
+            case SDLK_UP: mVelY -= Player_VEL;gPlayerTexture.loadFromFile( "pacup.png" ); break;
+            case SDLK_DOWN: mVelY += Player_VEL;gPlayerTexture.loadFromFile( "pacdown.png" ); break;
+            case SDLK_LEFT: mVelX -= Player_VEL;gPlayerTexture.loadFromFile( "pacleft.png" ); break;
+            case SDLK_RIGHT: mVelX += Player_VEL;gPlayerTexture.loadFromFile( "pac.png" ); break;
         }
     }
     //If a key was released
