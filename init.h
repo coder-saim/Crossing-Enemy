@@ -1,5 +1,3 @@
-#ifndef INIT_H
-#define INIT_H
 #include<stdio.h>
 #include <iostream>
 #include<SDL2/SDL.h>
@@ -44,14 +42,20 @@ SDL_Surface* enemy = NULL;
 SDL_Texture* enemy_tex = NULL;
 SDL_Surface* ccoin = NULL;
 SDL_Texture* ccoin_tex = NULL;
+SDL_Surface* Specialcoin = NULL;
+SDL_Texture* Specialcoin_tex = NULL;
+SDL_Surface* supercoin = NULL;
+SDL_Texture* supercoin_tex = NULL;
+SDL_Surface* pointsP = NULL;
+SDL_Texture* pointsP_tex = NULL;
+SDL_Surface* pointsP2 = NULL;
+SDL_Texture* pointsP2_tex = NULL;
 SDL_Surface* door = NULL;
 SDL_Texture* door_tex = NULL;
 SDL_Surface* tmp = NULL;
-SDL_Surface* Specialcoin = NULL;
-SDL_Texture* Specialcoin_tex = NULL;
 
 Mix_Music *gMusic1 = NULL,*gMusic2 = NULL,*gMusic3 = NULL;
-Mix_Chunk *death = NULL,*coin = NULL,*victory = NULL,*levelup = NULL;
+Mix_Chunk *click = NULL,*death = NULL,*coin = NULL,*victory = NULL,*levelup = NULL;
 
 
 bool init(){
@@ -120,6 +124,7 @@ bool init(){
 	coin = Mix_LoadWAV( "coin.mp3" );
 	victory = Mix_LoadWAV( "Victory.mp3" );
 	levelup = Mix_LoadWAV( "Victory.mp3" );
+	click = Mix_LoadWAV( "Click.mp3" );
 
 
 
@@ -134,5 +139,3 @@ bool init(){
 
     return true;
 }
-
-#endif

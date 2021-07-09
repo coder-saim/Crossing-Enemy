@@ -1,6 +1,4 @@
-#pragma once
-#ifndef PLAY_H
-#define PLAY_H
+
 #include"menu.h"
 #include"player.h"
 #include"player2.h"
@@ -10,10 +8,13 @@
 #include <algorithm>
 #include"score.h"
 
+
 int pause_coin=10;
 int pause_level=2;
 int level=1;
 int collissionpixcount=0;
+int LastDigit=0;
+
 
 void play(){
 
@@ -24,13 +25,14 @@ void play(){
 
     if(menu_button==1 || menu_button==11){
 		Mix_HaltMusic();
+		
 		if(menu_button==1) InputTaken();
 
 		if(menu_button==11){
 			total_coin=pause_coin;
 			level= pause_level;
 		} 
-		else level=1;
+		else level=9;
 
 	//////////////////////**************LEVEL11111111111****************////////////////
 	//////////////////////**************LEVEL11111111111****************////////////////
@@ -78,18 +80,38 @@ void play(){
 		door_position.h = 30;
 
 
-		//Special Coin
+	
+
+
+
+
+	//Special Coin
         bool SpecialcoinB = false;
         Specialcoin = IMG_Load("Specialcoin.png");
 		Specialcoin_tex = SDL_CreateTextureFromSurface(renderer,Specialcoin);
 		SDL_FreeSurface(Specialcoin);
 
         SDL_Rect Specialcoin_position;
-		Specialcoin_position.x = 640;
-		Specialcoin_position.y = 40;
+		Specialcoin_position.x = 640+ 400 * (rand() % 2);
+		Specialcoin_position.y = 20 + 900 * (rand() % 2);
 		Specialcoin_position.w = 30;
 		Specialcoin_position.h = 30;
 		
+
+
+	//Supercoin(sword)
+		bool supercoinB = false;
+        supercoin = IMG_Load("supercoin.png");
+		supercoin_tex = SDL_CreateTextureFromSurface(renderer,supercoin);
+		SDL_FreeSurface(supercoin);
+
+        SDL_Rect supercoin_position;
+		supercoin_position.x = 40+ 400 * (rand() % 2);
+		supercoin_position.y = 40+ 888 * (rand() % 2);
+		supercoin_position.w = 30;
+		supercoin_position.h = 30;
+
+	
 
 	// NON-Special COIN
 		ccoin =IMG_Load("coin.png");
@@ -98,30 +120,30 @@ void play(){
 
 		SDL_Rect ccoin1_position;
 		ccoin1_position.x = 950;
-		ccoin1_position.y = 888;
+		ccoin1_position.y = 888 - 200 * (rand() % 3);
 		ccoin1_position.w = 20;
 		ccoin1_position.h = 20;
 
 		SDL_Rect ccoin2_position;
-		ccoin2_position.x = 30;
+		ccoin2_position.x = 0 + 240 * (rand() % 3) ;
 		ccoin2_position.y = 250;
 		ccoin2_position.w = 20;
 		ccoin2_position.h = 20;
 
 		SDL_Rect ccoin3_position;
-		ccoin3_position.x = 0;
+		ccoin3_position.x = 0+ 380 * (rand() % 3);
 		ccoin3_position.y = 900;
 		ccoin3_position.w = 20;
 		ccoin3_position.h = 20;
 
 		SDL_Rect ccoin4_position;
 		ccoin4_position.x = 1250;
-		ccoin4_position.y = 10;
+		ccoin4_position.y = 30+ 320 * (rand() % 3) ;
 		ccoin4_position.w = 20;
 		ccoin4_position.h = 20;
 
 		SDL_Rect ccoin5_position;
-		ccoin5_position.x = 580;
+		ccoin5_position.x = 580 + 60 * (rand() % 2);
 		ccoin5_position.y = 210;
 		ccoin5_position.w = 20;
 		ccoin5_position.h = 20;
@@ -186,7 +208,7 @@ void play(){
 		
 		double ang=0;
 		bool quit = false; 	//Main loop flag
-		SDL_Event d;		//Event handler
+		SDL_Event d;		//Even-----------------------------t handler
 		Player player;	//The dot that will be moving around on the screen
 		
 			//Set the wall
@@ -384,13 +406,14 @@ void play(){
 			wall_30.h = 0;
 
 		int points=0; 
+		int msc=0;
 
 		while(!quit){
 			while( SDL_PollEvent( &d ) != 0 ){
 					if( d.type == SDL_QUIT ){
 						quit = true;
 					}
-
+					// pause
 					if(d.key.keysym.scancode==SDL_SCANCODE_P){
 						pause_level=level;
 						pause_coin=total_coin;
@@ -399,26 +422,30 @@ void play(){
 						goto Main_Menu;
 					} 
 
-					player.handleEvent( d );	//Handle input for the dot
+					//music control
+					if(d.key.keysym.scancode==SDL_SCANCODE_M) Mix_HaltMusic();
 					
+
+					player.handleEvent( d );	//Handle input for the dot
+
 					
 				}
-				//cout<<mPosX<<" "<<mPosY<<endl;if(mPosX>=0 && mPosX<=WINDOW_WIDTH) mPosX+=5;
-				//moving enemy 
+			//cout<<mPosX<<" "<<mPosY<<endl;if(mPosX>=0 && mPosX<=WINDOW_WIDTH) mPosX+=5;
+			//moving enemy 
 				enemy1_position.y= (int) y_pos1;
 				enemy2_position.x= (int) x_pos2;
 				enemy3_position.y= (int) y_pos3;
 				enemy4_position.x= (int) x_pos4;
 				enemy5_position.y= (int) y_pos5;
 				
-				//Move the dot and check collision
+			//Move the dot and check collision
 				player.move( wall_1,wall_2,wall_3,wall_4,wall_5,wall_6,wall_7,wall_8,wall_9,wall_10,wall_11,wall_12,wall_13,wall_14,wall_15,
 				wall_16,wall_17,wall_18,wall_19,wall_20,wall_21,wall_22,wall_23,wall_24,wall_25,wall_26,wall_27,wall_28,wall_29,wall_30 );
 
 				
-				//collission with enemy
-				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h)) {
-					if(SpecialcoinB == false){
+			//collission with enemy
+				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h) && enemy1_position.w!=0 ) {
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -427,18 +454,25 @@ void play(){
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy1_position.w=0;
+						enemy1_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
-					else if(collissionpixcount > 13) SpecialcoinB = false;
-					
+					else if(collissionpixcount > 13) SpecialcoinB = false;	
 				}
 
-				if(  mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
+
+				if( enemy2_position.w!=0 && mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
 				&& mPosX >=(enemy2_position.x - enemy2_position.w) && mPosX <=(enemy2_position.x + enemy2_position.w)) {
 
-					if(SpecialcoinB == false){
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -447,17 +481,25 @@ void play(){
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy2_position.w=0;
+						enemy2_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 
-				if(  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
+				if(  enemy3_position.w!=0 &&  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
 				&& mPosY>=(enemy3_position.y - enemy3_position.h) && mPosY<=(enemy3_position.y + enemy3_position.h)) {
-					if(SpecialcoinB == false){
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -466,18 +508,26 @@ void play(){
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy3_position.w=0;
+						enemy3_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 
-				if(  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
+				if(  enemy4_position.w!=0 &&  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
 				&& mPosY>=(enemy4_position.y - enemy4_position.h) && mPosY<=(enemy4_position.y + enemy4_position.h)) {
 
-					if(SpecialcoinB == false){
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -486,16 +536,23 @@ void play(){
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy4_position.w=0;
+						enemy4_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
-				if(  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
+				if(  enemy5_position.w!=0 &&  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
 				&& mPosY>=(enemy5_position.y - enemy5_position.h) && mPosY<=(enemy5_position.y + enemy5_position.h)) {
-					if(SpecialcoinB == false){
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -504,9 +561,16 @@ void play(){
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy5_position.w=0;
+						enemy5_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
@@ -522,6 +586,19 @@ void play(){
 						SpecialcoinB = true;
 
 						gPlayerTexture.loadFromFile( "pac2.png" );
+
+						collissionpixcount = 0;
+
+				} 
+
+				//collide with supercoin
+
+                if(  mPosX >= (supercoin_position.x-supercoin_position.w) && mPosX <= (supercoin_position.x+supercoin_position.w) 
+				&& mPosY>=(supercoin_position.y - supercoin_position.h) && mPosY<=(supercoin_position.y + supercoin_position.h)){
+						Mix_PlayChannel( -1, coin, 0 );
+						supercoin_position.x=0;
+						supercoin_position.y=0; 
+						supercoinB = true;			
 
 						collissionpixcount = 0;
 
@@ -557,8 +634,61 @@ void play(){
 
 				if((  mPosX >= (door_position.x-door_position.w) && mPosX <= (door_position.x+door_position.w) 
 				&& mPosY>=(door_position.y - door_position.h) && mPosY<=(door_position.y + door_position.h)) && points == 5){
-						Mix_PlayChannel( -1, levelup, 0 );puts("Level 1 Upgraded");++level;total_coin+=points; goto LEVEL;
+						Mix_PlayChannel( -1, levelup, 0 );puts("Level 1 Upgraded");++level;total_coin+=points;if(supercoinB) total_coin+=5; goto LEVEL;
 				} 
+
+			//points
+
+
+			//Points Print in level											
+				
+				LastDigit = ((points+total_coin) % 10);
+
+				switch( LastDigit )
+        		{
+        		case 0 : pointsP = IMG_Load("0.jpg"); break;									
+        		case 1 : pointsP = IMG_Load("1.jpg"); break;									
+        		case 2 : pointsP = IMG_Load("2.jpg"); break;
+        		case 3 : pointsP = IMG_Load("3.jpg"); break;
+        		case 4 : pointsP = IMG_Load("4.jpg"); break;
+        		case 5 : pointsP = IMG_Load("5.jpg"); break;
+        		case 6 : pointsP = IMG_Load("6.png"); break;
+        		case 7 : pointsP = IMG_Load("7.jpg"); break;
+        		case 8 : pointsP = IMG_Load("8.jpg"); break;
+        		case 9 : pointsP = IMG_Load("9.jpg"); break;
+        		}
+
+				pointsP_tex = SDL_CreateTextureFromSurface(renderer,pointsP);
+				SDL_FreeSurface(pointsP);
+
+        		SDL_Rect pointsP_position;
+				pointsP_position.x = 1250 ;
+				pointsP_position.y = 0 ;
+				pointsP_position.w = 30;
+				pointsP_position.h = 30;
+
+			//2nd digit
+				
+				switch( ((points+total_coin)/10) )
+        		{
+        		case 0 : pointsP2 = IMG_Load("0.jpg"); break;									
+        		case 1 : pointsP2 = IMG_Load("1.jpg"); break;									
+        		case 2 : pointsP2 = IMG_Load("2.jpg"); break;
+        		case 3 : pointsP2 = IMG_Load("3.jpg"); break;
+				case 4 : pointsP2 = IMG_Load("4.jpg"); break;
+        		}
+
+				pointsP2_tex = SDL_CreateTextureFromSurface(renderer,pointsP2);
+				SDL_FreeSurface(pointsP2);
+
+        		SDL_Rect pointsP2_position;
+				pointsP2_position.x = 1220;
+				pointsP2_position.y = 0;
+				pointsP2_position.w = 30;
+				pointsP2_position.h = 30;
+
+
+
 
 				 
 
@@ -670,8 +800,16 @@ void play(){
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy4_position);
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy5_position);
 				
+				//Rendering pointsP
+                SDL_RenderCopy(renderer,pointsP_tex,NULL,&pointsP_position);
+				SDL_RenderCopy(renderer,pointsP2_tex,NULL,&pointsP2_position);
+
+
 				//Rendering Specialcoin
                 SDL_RenderCopy(renderer,Specialcoin_tex,NULL,&Specialcoin_position);
+
+				//Rendering supercoin
+                SDL_RenderCopy(renderer,supercoin_tex,NULL,&supercoin_position);
 
 
 				//Rendering coin
@@ -794,17 +932,34 @@ void play(){
 		door_position.w = 30;
 		door_position.h = 30;
 
-		//Special Coin
+
+
+	//Special Coin
         bool SpecialcoinB = false;
         Specialcoin = IMG_Load("Specialcoin.png");
 		Specialcoin_tex = SDL_CreateTextureFromSurface(renderer,Specialcoin);
 		SDL_FreeSurface(Specialcoin);
 
         SDL_Rect Specialcoin_position;
-		Specialcoin_position.x = 20;
+		Specialcoin_position.x = 20 + 160 * (rand() % 2);
 		Specialcoin_position.y = 820;
 		Specialcoin_position.w = 30;
 		Specialcoin_position.h = 30;
+
+
+	//Supercoin(sword)
+		bool supercoinB = false;
+        supercoin = IMG_Load("supercoin.png");
+		supercoin_tex = SDL_CreateTextureFromSurface(renderer,supercoin);
+		SDL_FreeSurface(supercoin);
+
+        SDL_Rect supercoin_position;
+		supercoin_position.x = 40+ 400 * (rand() % 2);
+		supercoin_position.y = 40+ 888 * (rand() % 2);
+		supercoin_position.w = 30;
+		supercoin_position.h = 30;
+
+
 		
 
 	// NON-Special COIN
@@ -813,44 +968,44 @@ void play(){
 		SDL_FreeSurface(ccoin);
 
 		SDL_Rect ccoin1_position;
-		ccoin1_position.x = 10;
+		ccoin1_position.x = 10 + 160 * (rand() % 2);
 		ccoin1_position.y = 440;
 		ccoin1_position.w = 20;
 		ccoin1_position.h = 20;
 
 		SDL_Rect ccoin2_position;
-		ccoin2_position.x = 500;
+		ccoin2_position.x = 500 + 80 * (rand() % 3);
 		ccoin2_position.y = 400;
 		ccoin2_position.w = 20;
 		ccoin2_position.h = 20;
 
 		SDL_Rect ccoin3_position;
-		ccoin3_position.x = 570;
+		ccoin3_position.x = 570 + 160 * (rand() % 3);
 		ccoin3_position.y = 85;
 		ccoin3_position.w = 20;
 		ccoin3_position.h = 20;
 
 		SDL_Rect ccoin4_position;
 		ccoin4_position.x = 1050;
-		ccoin4_position.y = 30;
+		ccoin4_position.y = 30 + 80 * (rand() % 2);
 		ccoin4_position.w = 20;
 		ccoin4_position.h = 20;
 
 		SDL_Rect ccoin5_position;
-		ccoin5_position.x = 650;
+		ccoin5_position.x = 650 - 3* 80 * (rand() % 2);
 		ccoin5_position.y = 730;
 		ccoin5_position.w = 20;
 		ccoin5_position.h = 20;
 
 		SDL_Rect ccoin6_position;
-		ccoin6_position.x = 900;
-		ccoin6_position.y = 650;
+		ccoin6_position.x = 900 + 160 * (rand() % 2);
+		ccoin6_position.y = 650+ 80 * (rand() % 2);
 		ccoin6_position.w = 20;
 		ccoin6_position.h = 20;
 
 		SDL_Rect ccoin7_position;
-		ccoin7_position.x = 1050;
-		ccoin7_position.y = 920;
+		ccoin7_position.x = 1050 + 160 * (rand() % 2);
+		ccoin7_position.y = 920 ;
 		ccoin7_position.w = 20;
 		ccoin7_position.h = 20;
 
@@ -1113,6 +1268,9 @@ int points=0;
 						Mix_PlayMusic( gMusic3, -1 );
 						goto Main_Menu;
 					} 
+
+					if(d.key.keysym.scancode==SDL_SCANCODE_M) Mix_HaltMusic();
+
 					player.handleEvent( d );	//Handle input for the dot
 					
 					
@@ -1131,9 +1289,8 @@ int points=0;
 				wall_16,wall_17,wall_18,wall_19,wall_20,wall_21,wall_22,wall_23,wall_24,wall_25,wall_26,wall_27,wall_28,wall_29,wall_30 );
 				
 				//collission with enemy
-				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h)) {
-
-					if(SpecialcoinB == false){
+				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h) && enemy1_position.w!=0 ) {
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -1142,17 +1299,24 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy1_position.w=0;
+						enemy1_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
-					else if(collissionpixcount > 13) SpecialcoinB = false;
+					else if(collissionpixcount > 13) SpecialcoinB = false;	
 				}
 
-				if(  mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
+				if( enemy2_position.w!=0 && mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
 				&& mPosX >=(enemy2_position.x - enemy2_position.w) && mPosX <=(enemy2_position.x + enemy2_position.w)) {
 
-					if(SpecialcoinB == false){
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -1161,17 +1325,25 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy2_position.w=0;
+						enemy2_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 
-				if(  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
+				if(  enemy3_position.w!=0 &&  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
 				&& mPosY>=(enemy3_position.y - enemy3_position.h) && mPosY<=(enemy3_position.y + enemy3_position.h)) {
-					if(SpecialcoinB == false){
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -1180,17 +1352,26 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy3_position.w=0;
+						enemy3_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 
-				if(  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
+				if(  enemy4_position.w!=0 &&  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
 				&& mPosY>=(enemy4_position.y - enemy4_position.h) && mPosY<=(enemy4_position.y + enemy4_position.h)) {
-					if(SpecialcoinB == false){
+
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -1199,16 +1380,23 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy4_position.w=0;
+						enemy4_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
-				if(  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
+				if(  enemy5_position.w!=0 &&  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
 				&& mPosY>=(enemy5_position.y - enemy5_position.h) && mPosY<=(enemy5_position.y + enemy5_position.h)) {
-					if(SpecialcoinB == false){
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -1217,14 +1405,21 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy5_position.w=0;
+						enemy5_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
-				//collide with Specialcoin
+			//collide with Specialcoin
 
                 if(  mPosX >= (Specialcoin_position.x-Specialcoin_position.w) && mPosX <= (Specialcoin_position.x+Specialcoin_position.w) 
 				&& mPosY>=(Specialcoin_position.y - Specialcoin_position.h) && mPosY<=(Specialcoin_position.y + Specialcoin_position.h)){
@@ -1239,11 +1434,24 @@ int points=0;
 
 				} 
 
+				
+			//collide with supercoin
+
+                if(  mPosX >= (supercoin_position.x-supercoin_position.w) && mPosX <= (supercoin_position.x+supercoin_position.w) 
+				&& mPosY>=(supercoin_position.y - supercoin_position.h) && mPosY<=(supercoin_position.y + supercoin_position.h)){
+						Mix_PlayChannel( -1, coin, 0 );
+						supercoin_position.x=0;
+						supercoin_position.y=0; 
+						supercoinB = true;			
+
+						collissionpixcount = 0;
+
+				} 
 
 
 
 
-				//Collide with Coin
+			//Collide with Coin
 
 				if(  mPosX >= (ccoin1_position.x-ccoin1_position.w) && mPosX <= (ccoin1_position.x+ccoin1_position.w) 
 				&& mPosY>=(ccoin1_position.y - ccoin1_position.h) && mPosY<=(ccoin1_position.y + ccoin1_position.h)){
@@ -1282,8 +1490,71 @@ int points=0;
 
 				if((  mPosX >= (door_position.x-door_position.w) && mPosX <= (door_position.x+door_position.w) 
 				&& mPosY>=(door_position.y - door_position.h) && mPosY<=(door_position.y + door_position.h)) && points == 7){
-						Mix_PlayChannel( -1, levelup, 0 );puts("Level 2 Upgraded");++level;total_coin+=points; goto LEVEL;
+						Mix_PlayChannel( -1, levelup, 0 );puts("Level 2 Upgraded");++level;total_coin+=points;if(supercoinB) total_coin+=5; goto LEVEL;
 				} 
+
+
+
+					
+			//Points Print in level											
+				
+				LastDigit = ((points+total_coin) % 10);
+
+				switch( LastDigit )
+        		{
+        		case 0 : pointsP = IMG_Load("0.jpg"); break;									
+
+        		case 1 : pointsP = IMG_Load("1.jpg"); break;									
+					
+        		case 2 : pointsP = IMG_Load("2.jpg"); break;
+
+        		case 3 : pointsP = IMG_Load("3.jpg"); break;
+
+        		case 4 : pointsP = IMG_Load("4.jpg"); break;
+
+        		case 5 : pointsP = IMG_Load("5.jpg"); 
+					pointsP2 = IMG_Load("1.jpg");break;
+
+        		case 6 : pointsP = IMG_Load("6.png"); break;
+
+        		case 7 : pointsP = IMG_Load("7.jpg"); break;
+
+        		case 8 : pointsP = IMG_Load("8.jpg"); break;
+
+        		case 9 : pointsP = IMG_Load("9.jpg"); break;
+
+        		}
+
+				pointsP_tex = SDL_CreateTextureFromSurface(renderer,pointsP);
+				SDL_FreeSurface(pointsP);
+
+        		SDL_Rect pointsP_position;
+				pointsP_position.x = 1250 ;
+				pointsP_position.y = 0 ;
+				pointsP_position.w = 30;
+				pointsP_position.h = 30;
+
+			
+				//2nd digit
+				
+				switch( ((points+total_coin)/10) )
+        		{
+        		case 0 : pointsP2 = IMG_Load("0.jpg"); break;									
+        		case 1 : pointsP2 = IMG_Load("1.jpg"); break;									
+        		case 2 : pointsP2 = IMG_Load("2.jpg"); break;
+        		case 3 : pointsP2 = IMG_Load("3.jpg"); break;
+				case 4 : pointsP2 = IMG_Load("4.jpg"); break;
+        		}
+
+				pointsP2_tex = SDL_CreateTextureFromSurface(renderer,pointsP2);
+				SDL_FreeSurface(pointsP2);
+
+        		SDL_Rect pointsP2_position;
+				pointsP2_position.x = 1220;
+				pointsP2_position.y = 0;
+				pointsP2_position.w = 30;
+				pointsP2_position.h = 30;
+
 
 
 
@@ -1394,9 +1665,16 @@ int points=0;
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy3_position);
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy4_position);
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy5_position);
+
+				//Rendering pointsP
+                SDL_RenderCopy(renderer,pointsP_tex,NULL,&pointsP_position);
+				SDL_RenderCopy(renderer,pointsP2_tex,NULL,&pointsP2_position);
 				
 				//Rendering Specialcoin
                 SDL_RenderCopy(renderer,Specialcoin_tex,NULL,&Specialcoin_position);
+
+				//Rendering supercoin
+                SDL_RenderCopy(renderer,supercoin_tex,NULL,&supercoin_position);
 
 				//Rendering coin
 				SDL_RenderCopy(renderer,ccoin_tex,NULL,&ccoin1_position);
@@ -1514,68 +1792,80 @@ int points=0;
 		SDL_FreeSurface(door);
 		
 		SDL_Rect door_position;
-		door_position.x = 480;
-		door_position.y = 450;
+		door_position.x = 1250;
+		door_position.y = 930;
 		door_position.w = 30;
 		door_position.h = 30;
 
-		//Special Coin
+	//Special Coin
         bool SpecialcoinB = false;
         Specialcoin = IMG_Load("Specialcoin.png");
 		Specialcoin_tex = SDL_CreateTextureFromSurface(renderer,Specialcoin);
 		SDL_FreeSurface(Specialcoin);
 
         SDL_Rect Specialcoin_position;
-		Specialcoin_position.x = 30;
-		Specialcoin_position.y = 820;
+		Specialcoin_position.x = 30 + 180 * (rand() % 2);
+		Specialcoin_position.y = 820- 270 * (rand() % 2);
 		Specialcoin_position.w = 30;
 		Specialcoin_position.h = 30;
+
+	//Supercoin(sword)
+		bool supercoinB = false;
+        supercoin = IMG_Load("supercoin.png");
+		supercoin_tex = SDL_CreateTextureFromSurface(renderer,supercoin);
+		SDL_FreeSurface(supercoin);
+
+        SDL_Rect supercoin_position;
+		supercoin_position.x = 480 + 190 * (rand() % 2);
+		supercoin_position.y = 230 + 190 * (rand() % 2);
+		supercoin_position.w = 30;
+		supercoin_position.h = 30;
 		
 
-		// NON-Special COIN
+	// NON-Special COIN
 		ccoin =IMG_Load("coin.png");
 		ccoin_tex = SDL_CreateTextureFromSurface(renderer,ccoin);
 		SDL_FreeSurface(ccoin);
 
 		SDL_Rect ccoin1_position;
 		ccoin1_position.x = 10;
-		ccoin1_position.y = 420;
+		ccoin1_position.y = 420 - 95 * (rand() % 2);
 		ccoin1_position.w = 20;
 		ccoin1_position.h = 20;
 
 		SDL_Rect ccoin2_position;
-		ccoin2_position.x = 420;
+		ccoin2_position.x = 420  - 95 * (rand() % 2);
 		ccoin2_position.y = 780;
 		ccoin2_position.w = 20;
 		ccoin2_position.h = 20;
 
 		SDL_Rect ccoin3_position;
 		ccoin3_position.x = 570;
-		ccoin3_position.y = 100;
+		ccoin3_position.y = 100 + 95 * (rand() % 2);
 		ccoin3_position.w = 20;
 		ccoin3_position.h = 20;
 
 		SDL_Rect ccoin4_position;
 		ccoin4_position.x = 400;
-		ccoin4_position.y = 100;
+		ccoin4_position.y = 100 + 95 * (rand() % 2);
 		ccoin4_position.w = 20;
 		ccoin4_position.h = 20;
 
 		SDL_Rect ccoin5_position;
 		ccoin5_position.x = 550;
-		ccoin5_position.y = 580;
+		ccoin5_position.y = 580 - 120 * (rand() % 2);
 		ccoin5_position.w = 20;
 		ccoin5_position.h = 20;
 
 		SDL_Rect ccoin6_position;
-		ccoin6_position.x = 850;
+		ccoin6_position.x = 850 + 100 * (rand() % 2);
 		ccoin6_position.y = 600;
 		ccoin6_position.w = 20;
 		ccoin6_position.h = 20;
 
 		SDL_Rect ccoin7_position;
 		ccoin7_position.x = 1250;
-		ccoin7_position.y = 600;
+		ccoin7_position.y = 600 - 200 * (rand() % 2);
 		ccoin7_position.w = 20;
 		ccoin7_position.h = 20;
 
@@ -1841,7 +2131,7 @@ int points=0;
 						Mix_PlayMusic( gMusic3, -1 );
 						goto Main_Menu;
 					}
-
+					if(d.key.keysym.scancode==SDL_SCANCODE_M) Mix_HaltMusic();
 
 					player.handleEvent( d );	//Handle input for the dot
 					
@@ -1860,8 +2150,8 @@ int points=0;
 				wall_16,wall_17,wall_18,wall_19,wall_20,wall_21,wall_22,wall_23,wall_24,wall_25,wall_26,wall_27,wall_28,wall_29,wall_30 );
 				
 				//collission with enemy
-				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h)) {
-					if(SpecialcoinB == false){
+				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h) && enemy1_position.w!=0 ) {
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -1870,16 +2160,24 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy1_position.w=0;
+						enemy1_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
-					else if(collissionpixcount > 13) SpecialcoinB = false;
+					else if(collissionpixcount > 13) SpecialcoinB = false;	
 				}
 
-				if(  mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
+				if( enemy2_position.w!=0 && mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
 				&& mPosX >=(enemy2_position.x - enemy2_position.w) && mPosX <=(enemy2_position.x + enemy2_position.w)) {
-					if(SpecialcoinB == false){
+
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -1888,17 +2186,25 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy2_position.w=0;
+						enemy2_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 
-				if(  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
+				if(  enemy3_position.w!=0 &&  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
 				&& mPosY>=(enemy3_position.y - enemy3_position.h) && mPosY<=(enemy3_position.y + enemy3_position.h)) {
-					if(SpecialcoinB == false){
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -1907,17 +2213,26 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy3_position.w=0;
+						enemy3_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 
-				if(  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
+				if(  enemy4_position.w!=0 &&  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
 				&& mPosY>=(enemy4_position.y - enemy4_position.h) && mPosY<=(enemy4_position.y + enemy4_position.h)) {
-					if(SpecialcoinB == false){
+
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -1926,16 +2241,23 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy4_position.w=0;
+						enemy4_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
-				if(  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
+				if(  enemy5_position.w!=0 &&  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
 				&& mPosY>=(enemy5_position.y - enemy5_position.h) && mPosY<=(enemy5_position.y + enemy5_position.h)) {
-					if(SpecialcoinB == false){
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -1944,13 +2266,20 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy5_position.w=0;
+						enemy5_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
-				//collide with Specialcoin
+			//collide with Specialcoin
 
                 if(  mPosX >= (Specialcoin_position.x-Specialcoin_position.w) && mPosX <= (Specialcoin_position.x+Specialcoin_position.w) 
 				&& mPosY>=(Specialcoin_position.y - Specialcoin_position.h) && mPosY<=(Specialcoin_position.y + Specialcoin_position.h)){
@@ -1964,9 +2293,22 @@ int points=0;
 						collissionpixcount = 0;
 
 				} 
+			
+			//collide with supercoin
+
+                if(  mPosX >= (supercoin_position.x-supercoin_position.w) && mPosX <= (supercoin_position.x+supercoin_position.w) 
+				&& mPosY>=(supercoin_position.y - supercoin_position.h) && mPosY<=(supercoin_position.y + supercoin_position.h)){
+						Mix_PlayChannel( -1, coin, 0 );
+						supercoin_position.x=0;
+						supercoin_position.y=0; 
+						supercoinB = true;			
+
+						collissionpixcount = 0;
+
+				} 				
 
 
-				//Collide with Coin
+			//Collide with Coin
 
 				if(  mPosX >= (ccoin1_position.x-ccoin1_position.w) && mPosX <= (ccoin1_position.x+ccoin1_position.w) 
 				&& mPosY>=(ccoin1_position.y - ccoin1_position.h) && mPosY<=(ccoin1_position.y + ccoin1_position.h)){
@@ -2005,11 +2347,68 @@ int points=0;
 
 				if((  mPosX >= (door_position.x-door_position.w) && mPosX <= (door_position.x+door_position.w) 
 				&& mPosY>=(door_position.y - door_position.h) && mPosY<=(door_position.y + door_position.h)) && points == 7){
-						Mix_PlayChannel( -1, levelup, 0 );puts("Level 3 Upgraded");++level;total_coin+=points; goto LEVEL;
+						Mix_PlayChannel( -1, levelup, 0 );puts("Level 3 Upgraded");++level;total_coin+=points;if(supercoinB) total_coin+=5; goto LEVEL;
 				} 
-				
-				
 
+
+					
+			//Points Print in level											
+				
+				LastDigit = ((points+total_coin) % 10);
+
+				switch( LastDigit )
+        		{
+        		case 0 : pointsP = IMG_Load("0.jpg"); break;									
+
+        		case 1 : pointsP = IMG_Load("1.jpg"); break;									
+					
+        		case 2 : pointsP = IMG_Load("2.jpg"); break;
+
+        		case 3 : pointsP = IMG_Load("3.jpg"); break;
+
+        		case 4 : pointsP = IMG_Load("4.jpg"); break;
+
+        		case 5 : pointsP = IMG_Load("5.jpg"); 
+					break;
+
+        		case 6 : pointsP = IMG_Load("6.png"); break;
+
+        		case 7 : pointsP = IMG_Load("7.jpg"); break;
+
+        		case 8 : pointsP = IMG_Load("8.jpg"); break;
+
+        		case 9 : pointsP = IMG_Load("9.jpg"); break;
+
+        		}
+				pointsP_tex = SDL_CreateTextureFromSurface(renderer,pointsP);
+				SDL_FreeSurface(pointsP);
+
+        		SDL_Rect pointsP_position;
+				pointsP_position.x = 1250 ;
+				pointsP_position.y = 0 ;
+				pointsP_position.w = 30;
+				pointsP_position.h = 30;
+				
+				
+				//2nd digit
+				
+				switch( ((points+total_coin)/10) )
+        		{
+        		case 0 : pointsP2 = IMG_Load("0.jpg"); break;									
+        		case 1 : pointsP2 = IMG_Load("1.jpg"); break;									
+        		case 2 : pointsP2 = IMG_Load("2.jpg"); break;
+        		case 3 : pointsP2 = IMG_Load("3.jpg"); break;
+				case 4 : pointsP2 = IMG_Load("4.jpg"); break;
+        		}
+
+				pointsP2_tex = SDL_CreateTextureFromSurface(renderer,pointsP2);
+				SDL_FreeSurface(pointsP2);
+
+        		SDL_Rect pointsP2_position;
+				pointsP2_position.x = 1220;
+				pointsP2_position.y = 0;
+				pointsP2_position.w = 30;
+				pointsP2_position.h = 30;
 
 
 
@@ -2119,8 +2518,15 @@ int points=0;
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy4_position);
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy5_position);
 
+				//Rendering pointsP
+                SDL_RenderCopy(renderer,pointsP_tex,NULL,&pointsP_position);
+				SDL_RenderCopy(renderer,pointsP2_tex,NULL,&pointsP2_position);
+
 				//Rendering Specialcoin
                 SDL_RenderCopy(renderer,Specialcoin_tex,NULL,&Specialcoin_position);
+
+				//Rendering supercoin
+                SDL_RenderCopy(renderer,supercoin_tex,NULL,&supercoin_position);
 				
 
 				//Rendering coin
@@ -2236,12 +2642,12 @@ int points=0;
 		SDL_FreeSurface(door);
 		
 		SDL_Rect door_position;
-		door_position.x = 210;
-		door_position.y = 640;
+		door_position.x = 1250;
+		door_position.y = 930;
 		door_position.w = 30;
 		door_position.h = 30;
 
-		//Special Coin
+	//Special Coin
         bool SpecialcoinB = false;
         Specialcoin = IMG_Load("Specialcoin.png");
 		Specialcoin_tex = SDL_CreateTextureFromSurface(renderer,Specialcoin);
@@ -2252,6 +2658,18 @@ int points=0;
 		Specialcoin_position.y = 900;
 		Specialcoin_position.w = 30;
 		Specialcoin_position.h = 30;
+
+	//Supercoin(sword)
+		bool supercoinB = false;
+        supercoin = IMG_Load("supercoin.png");
+		supercoin_tex = SDL_CreateTextureFromSurface(renderer,supercoin);
+		SDL_FreeSurface(supercoin);
+
+        SDL_Rect supercoin_position;
+		supercoin_position.x = 30;
+		supercoin_position.y = 920;
+		supercoin_position.w = 30;
+		supercoin_position.h = 30;
 		
 
 	// NON-Special COIN
@@ -2315,7 +2733,7 @@ int points=0;
 
 		SDL_Rect ccoin10_position;
 		ccoin10_position.x = 1240;
-		ccoin10_position.y = 5;
+		ccoin10_position.y = 100;
 		ccoin10_position.w = 20;
 		ccoin10_position.h = 20;
 
@@ -2603,6 +3021,8 @@ int points=0;
 						goto Main_Menu;
 					}
 
+					if(d.key.keysym.scancode==SDL_SCANCODE_M) Mix_HaltMusic();
+
 					player.handleEvent( d );	//Handle input for the dot
 					
 					
@@ -2622,8 +3042,8 @@ int points=0;
 				wall_16,wall_17,wall_18,wall_19,wall_20,wall_21,wall_22,wall_23,wall_24,wall_25,wall_26,wall_27,wall_28,wall_29,wall_30 );
 				
 				//collission with enemy
-				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h)) {
-					if(SpecialcoinB == false){
+				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h) && enemy1_position.w!=0 ) {
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -2632,16 +3052,24 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy1_position.w=0;
+						enemy1_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
-					else if(collissionpixcount > 13) SpecialcoinB = false;
+					else if(collissionpixcount > 13) SpecialcoinB = false;	
 				}
 
-				if(  mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
+				if( enemy2_position.w!=0 && mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
 				&& mPosX >=(enemy2_position.x - enemy2_position.w) && mPosX <=(enemy2_position.x + enemy2_position.w)) {
-					if(SpecialcoinB == false){
+
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -2650,17 +3078,25 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy2_position.w=0;
+						enemy2_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 
-				if(  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
+				if(  enemy3_position.w!=0 &&  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
 				&& mPosY>=(enemy3_position.y - enemy3_position.h) && mPosY<=(enemy3_position.y + enemy3_position.h)) {
-					if(SpecialcoinB == false){
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -2669,17 +3105,25 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy3_position.w=0;
+						enemy3_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
-
-				if(  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
+if(  enemy4_position.w!=0 &&  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
 				&& mPosY>=(enemy4_position.y - enemy4_position.h) && mPosY<=(enemy4_position.y + enemy4_position.h)) {
-					if(SpecialcoinB == false){
+
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -2688,16 +3132,23 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy4_position.w=0;
+						enemy4_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
-				if(  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
+				if(  enemy5_position.w!=0 &&  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
 				&& mPosY>=(enemy5_position.y - enemy5_position.h) && mPosY<=(enemy5_position.y + enemy5_position.h)) {
-					if(SpecialcoinB == false){
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -2706,9 +3157,16 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy5_position.w=0;
+						enemy5_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
@@ -2726,12 +3184,12 @@ int points=0;
 					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
-				if(  mPosX >= (enemy7_position.x-enemy7_position.w) && mPosX <= (enemy7_position.x+enemy7_position.w) 
+				if(  enemy7_position.w!=0 &&  mPosX >= (enemy7_position.x-enemy7_position.w) && mPosX <= (enemy7_position.x+enemy7_position.w) 
 				&& mPosY>=(enemy7_position.y - enemy7_position.h) && mPosY<=(enemy7_position.y + enemy7_position.h)) {
 					if(SpecialcoinB == false){
 						total_coin+=points; points = 0;
@@ -2744,12 +3202,12 @@ int points=0;
 					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
-				//collide with Specialcoin
+			//collide with Specialcoin
 
                 if(  mPosX >= (Specialcoin_position.x-Specialcoin_position.w) && mPosX <= (Specialcoin_position.x+Specialcoin_position.w) 
 				&& mPosY>=(Specialcoin_position.y - Specialcoin_position.h) && mPosY<=(Specialcoin_position.y + Specialcoin_position.h)){
@@ -2763,10 +3221,22 @@ int points=0;
 						collissionpixcount = 0;
 
 				} 
+				
+			//collide with supercoin
+
+                if(  mPosX >= (supercoin_position.x-supercoin_position.w) && mPosX <= (supercoin_position.x+supercoin_position.w) 
+				&& mPosY>=(supercoin_position.y - supercoin_position.h) && mPosY<=(supercoin_position.y + supercoin_position.h)){
+						Mix_PlayChannel( -1, coin, 0 );
+						supercoin_position.x=0;
+						supercoin_position.y=0; 
+						supercoinB = true;			
+
+						collissionpixcount = 0;
+
+				} 
 
 
-
-				//Collide with Coin
+			//Collide with Coin
 
 				if(  mPosX >= (ccoin1_position.x-ccoin1_position.w) && mPosX <= (ccoin1_position.x+ccoin1_position.w) 
 				&& mPosY>=(ccoin1_position.y - ccoin1_position.h) && mPosY<=(ccoin1_position.y + ccoin1_position.h)){
@@ -2823,8 +3293,67 @@ int points=0;
 
 				if((  mPosX >= (door_position.x-door_position.w) && mPosX <= (door_position.x+door_position.w) 
 				&& mPosY>=(door_position.y - door_position.h) && mPosY<=(door_position.y + door_position.h)) && points == 10){
-						Mix_PlayChannel( -1, levelup, 0 );puts("Level 4 Upgraded");++level;total_coin+=points;goto LEVEL;
+						Mix_PlayChannel( -1, levelup, 0 );puts("Level 4 Upgraded");++level;total_coin+=points;if(supercoinB) total_coin+=5;goto LEVEL;
 				} 
+
+
+				
+					
+			//Points Print in level											
+				
+				LastDigit = ((points+total_coin) % 10);
+
+				switch( LastDigit )
+        		{
+        		case 0 : pointsP = IMG_Load("0.jpg"); break;									
+
+        		case 1 : pointsP = IMG_Load("1.jpg"); break;									
+					
+        		case 2 : pointsP = IMG_Load("2.jpg"); break;
+
+        		case 3 : pointsP = IMG_Load("3.jpg"); break;
+
+        		case 4 : pointsP = IMG_Load("4.jpg"); break;
+
+        		case 5 : pointsP = IMG_Load("5.jpg"); break;
+
+        		case 6 : pointsP = IMG_Load("6.png"); break;
+
+        		case 7 : pointsP = IMG_Load("7.jpg"); break;
+
+        		case 8 : pointsP = IMG_Load("8.jpg"); break;
+
+        		case 9 : pointsP = IMG_Load("9.jpg"); break;
+
+        		}
+				pointsP_tex = SDL_CreateTextureFromSurface(renderer,pointsP);
+				SDL_FreeSurface(pointsP);
+
+        		SDL_Rect pointsP_position;
+				pointsP_position.x = 1250 ;
+				pointsP_position.y = 0 ;
+				pointsP_position.w = 30;
+				pointsP_position.h = 30;
+
+				//2nd digit
+				
+				switch( ((points+total_coin)/10) )
+        		{
+        		case 0 : pointsP2 = IMG_Load("0.jpg"); break;									
+        		case 1 : pointsP2 = IMG_Load("1.jpg"); break;									
+        		case 2 : pointsP2 = IMG_Load("2.jpg"); break;
+        		case 3 : pointsP2 = IMG_Load("3.jpg"); break;
+				case 4 : pointsP2 = IMG_Load("4.jpg"); break;
+        		}
+
+				pointsP2_tex = SDL_CreateTextureFromSurface(renderer,pointsP2);
+				SDL_FreeSurface(pointsP2);
+
+        		SDL_Rect pointsP2_position;
+				pointsP2_position.x = 1220;
+				pointsP2_position.y = 0;
+				pointsP2_position.w = 30;
+				pointsP2_position.h = 30;
 
 				
 
@@ -2936,8 +3465,15 @@ int points=0;
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy6_position);
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy7_position);
 
+				//Rendering pointsP
+                SDL_RenderCopy(renderer,pointsP_tex,NULL,&pointsP_position);
+				SDL_RenderCopy(renderer,pointsP2_tex,NULL,&pointsP2_position);
+
 				//Rendering Specialcoin
                 SDL_RenderCopy(renderer,Specialcoin_tex,NULL,&Specialcoin_position);
+
+				//Rendering supercoin
+                SDL_RenderCopy(renderer,supercoin_tex,NULL,&supercoin_position);
 				
 
 				//Rendering coin
@@ -3073,7 +3609,7 @@ int points=0;
 		door_position.h = 30;
 
 
-		//Special Coin
+	//Special Coin
         bool SpecialcoinB = false;
         Specialcoin = IMG_Load("Specialcoin.png");
 		Specialcoin_tex = SDL_CreateTextureFromSurface(renderer,Specialcoin);
@@ -3084,6 +3620,18 @@ int points=0;
 		Specialcoin_position.y = 740;
 		Specialcoin_position.w = 30;
 		Specialcoin_position.h = 30;
+
+	//Supercoin(sword)
+		bool supercoinB = false;
+        supercoin = IMG_Load("supercoin.png");
+		supercoin_tex = SDL_CreateTextureFromSurface(renderer,supercoin);
+		SDL_FreeSurface(supercoin);
+
+        SDL_Rect supercoin_position;
+		supercoin_position.x = 420;
+		supercoin_position.y = 260;
+		supercoin_position.w = 30;
+		supercoin_position.h = 30;
 		
 
 	// NON-Special COIN
@@ -3439,6 +3987,8 @@ int points=0;
 						goto Main_Menu;
 					}
 
+					if(d.key.keysym.scancode==SDL_SCANCODE_M) Mix_HaltMusic();
+
 					player.handleEvent( d );	//Handle input for the dot
 					
 					
@@ -3459,8 +4009,8 @@ int points=0;
 				wall_16,wall_17,wall_18,wall_19,wall_20,wall_21,wall_22,wall_23,wall_24,wall_25,wall_26,wall_27,wall_28,wall_29,wall_30 );
 				
 				//collission with enemy
-				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h)) {
-					if(SpecialcoinB == false){
+				if(  mPosX >= (enemy1_position.x-enemy1_position.w) && mPosX <= (enemy1_position.x+enemy1_position.w) && mPosY>=(enemy1_position.y - enemy1_position.h) && mPosY<=(enemy1_position.y + enemy1_position.h) && enemy1_position.w!=0 ) {
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -3469,16 +4019,24 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy1_position.w=0;
+						enemy1_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
-					else if(collissionpixcount > 13) SpecialcoinB = false;
+					else if(collissionpixcount > 13) SpecialcoinB = false;	
 				}
 
-				if(  mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
+				if( enemy2_position.w!=0 && mPosY >= (enemy2_position.y-enemy2_position.h) && mPosY <=(enemy2_position.y + enemy2_position.h) 
 				&& mPosX >=(enemy2_position.x - enemy2_position.w) && mPosX <=(enemy2_position.x + enemy2_position.w)) {
-					if(SpecialcoinB == false){
+
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -3487,17 +4045,25 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy2_position.w=0;
+						enemy2_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 
-				if(  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
+				if(  enemy3_position.w!=0 &&  mPosX >= (enemy3_position.x-enemy3_position.w) && mPosX <= (enemy3_position.x+enemy3_position.w) 
 				&& mPosY>=(enemy3_position.y - enemy3_position.h) && mPosY<=(enemy3_position.y + enemy3_position.h)) {
-					if(SpecialcoinB == false){
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -3506,17 +4072,26 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy3_position.w=0;
+						enemy3_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
 
-				if(  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
+				if(  enemy4_position.w!=0 &&  mPosX >= (enemy4_position.x-enemy4_position.w) && mPosX <= (enemy4_position.x+enemy4_position.w) 
 				&& mPosY>=(enemy4_position.y - enemy4_position.h) && mPosY<=(enemy4_position.y + enemy4_position.h)) {
-					if(SpecialcoinB == false){
+
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -3525,16 +4100,23 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy4_position.w=0;
+						enemy4_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
-				if(  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
+				if(  enemy5_position.w!=0 &&  mPosX >= (enemy5_position.x-enemy5_position.w) && mPosX <= (enemy5_position.x+enemy5_position.w) 
 				&& mPosY>=(enemy5_position.y - enemy5_position.h) && mPosY<=(enemy5_position.y + enemy5_position.h)) {
-					if(SpecialcoinB == false){
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -3543,16 +4125,24 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy5_position.w=0;
+						enemy5_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
-				if(  mPosX >= (enemy6_position.x-enemy6_position.w) && mPosX <= (enemy6_position.x+enemy6_position.w) 
+
+				if( mPosX >= (enemy6_position.x-enemy6_position.w) && mPosX <= (enemy6_position.x+enemy6_position.w) 
 				&& mPosY>=(enemy6_position.y - enemy6_position.h) && mPosY<=(enemy6_position.y + enemy6_position.h)) {
-					if(SpecialcoinB == false){
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -3561,16 +4151,23 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy5_position.w=0;
+						enemy5_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
-				if(  mPosX >= (enemy7_position.x-enemy7_position.w) && mPosX <= (enemy7_position.x+enemy7_position.w) 
+				if(  enemy7_position.w!=0 &&  mPosX >= (enemy7_position.x-enemy7_position.w) && mPosX <= (enemy7_position.x+enemy7_position.w) 
 				&& mPosY>=(enemy7_position.y - enemy7_position.h) && mPosY<=(enemy7_position.y + enemy7_position.h)) {
-					if(SpecialcoinB == false){
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -3579,16 +4176,23 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy5_position.w=0;
+						enemy5_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
 
-				if(  mPosX >= (enemy8_position.x-enemy8_position.w) && mPosX <= (enemy8_position.x+enemy8_position.w) 
+				if(  enemy8_position.w!=0 &&  mPosX >= (enemy8_position.x-enemy8_position.w) && mPosX <= (enemy8_position.x+enemy8_position.w) 
 				&& mPosY>=(enemy8_position.y - enemy8_position.h) && mPosY<=(enemy8_position.y + enemy8_position.h)) {
-					if(SpecialcoinB == false){
+					if(SpecialcoinB == false && supercoinB == false){
 						total_coin+=points; points = 0;
 						bool opt = GameOver(total_coin);
 						if(opt){
@@ -3597,9 +4201,16 @@ int points=0;
 						else InputTaken(total_coin);
 						goto Main_Menu;
 					}
+					else if(supercoinB == true){
+						enemy5_position.w=0;
+						enemy5_position.h=0;
+						supercoinB = false;
+						supercoin_position.h = 0;
+						supercoin_position.w = 0;
+					}
 					else if(collissionpixcount < 14){
 							collissionpixcount++;
-							if(collissionpixcount > 5) gPlayerTexture.loadFromFile( "pac.png" );
+							if(collissionpixcount > 3) gPlayerTexture.loadFromFile( "pac.png" );
 					}
 					else if(collissionpixcount > 13) SpecialcoinB = false;
 				}
@@ -3618,7 +4229,19 @@ int points=0;
 						collissionpixcount = 0;
 
 				} 
+				
+				//collide with supercoin
 
+                if(  mPosX >= (supercoin_position.x-supercoin_position.w) && mPosX <= (supercoin_position.x+supercoin_position.w) 
+				&& mPosY>=(supercoin_position.y - supercoin_position.h) && mPosY<=(supercoin_position.y + supercoin_position.h)){
+						Mix_PlayChannel( -1, coin, 0 );
+						supercoin_position.x=0;
+						supercoin_position.y=0; 
+						supercoinB = true;			
+
+						collissionpixcount = 0;
+
+				} 
 
 
 
@@ -3679,6 +4302,7 @@ int points=0;
 
 				if((  mPosX >= (door_position.x-door_position.w) && mPosX <= (door_position.x+door_position.w) 
 				&& mPosY>=(door_position.y - door_position.h) && mPosY<=(door_position.y + door_position.h)) && points == 10){
+						total_coin+=points; if(supercoinB) total_coin+=10;
 						Mix_PlayChannel( -1, victory, 0 );
 						puts("You Win");
 						SDL_SetRenderDrawColor(renderer,240, 243, 244 ,255);
@@ -3696,6 +4320,64 @@ int points=0;
 				} 
 
 
+				
+					
+			//Points Print in level											
+				
+				LastDigit = ((points+total_coin) % 10);
+
+				switch( LastDigit )
+        		{
+        		case 0 : pointsP = IMG_Load("0.jpg"); break;									
+
+        		case 1 : pointsP = IMG_Load("1.jpg"); break;									
+					
+        		case 2 : pointsP = IMG_Load("2.jpg"); break;
+
+        		case 3 : pointsP = IMG_Load("3.jpg"); break;
+
+        		case 4 : pointsP = IMG_Load("4.jpg"); break;
+
+        		case 5 : pointsP = IMG_Load("5.jpg"); 
+					
+
+        		case 6 : pointsP = IMG_Load("6.png"); break;
+
+        		case 7 : pointsP = IMG_Load("7.jpg"); break;
+
+        		case 8 : pointsP = IMG_Load("8.jpg"); break;
+
+        		case 9 : pointsP = IMG_Load("9.jpg"); break;
+
+        		}
+				pointsP_tex = SDL_CreateTextureFromSurface(renderer,pointsP);
+				SDL_FreeSurface(pointsP);
+
+        		SDL_Rect pointsP_position;
+				pointsP_position.x = 1250 ;
+				pointsP_position.y = 0 ;
+				pointsP_position.w = 30;
+				pointsP_position.h = 30;
+
+				//2nd digit
+				
+				switch( ((points+total_coin)/10) )
+        		{
+        		case 0 : pointsP2 = IMG_Load("0.jpg"); break;									
+        		case 1 : pointsP2 = IMG_Load("1.jpg"); break;									
+        		case 2 : pointsP2 = IMG_Load("2.jpg"); break;
+        		case 3 : pointsP2 = IMG_Load("3.jpg"); break;
+				case 4 : pointsP2 = IMG_Load("4.jpg"); break;
+        		}
+
+				pointsP2_tex = SDL_CreateTextureFromSurface(renderer,pointsP2);
+				SDL_FreeSurface(pointsP2);
+
+        		SDL_Rect pointsP2_position;
+				pointsP2_position.x = 1220;
+				pointsP2_position.y = 0;
+				pointsP2_position.w = 30;
+				pointsP2_position.h = 30;
 
 
 
@@ -3808,8 +4490,15 @@ int points=0;
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy7_position);
 				SDL_RenderCopy(renderer,enemy_tex,NULL,&enemy8_position);
 
+				//Rendering pointsP
+                SDL_RenderCopy(renderer,pointsP_tex,NULL,&pointsP_position);
+				SDL_RenderCopy(renderer,pointsP2_tex,NULL,&pointsP2_position);
+
 				//Rendering Specialcoin
                 SDL_RenderCopy(renderer,Specialcoin_tex,NULL,&Specialcoin_position);
+
+				//Rendering supercoin
+                SDL_RenderCopy(renderer,supercoin_tex,NULL,&supercoin_position);
 				
 
 				//Rendering coin
@@ -3957,4 +4646,3 @@ void end(){
 
 
 
-#endif
